@@ -137,7 +137,7 @@ sum("4", "4")
 
 A good reproducible example includes all of the lines of code that we need to reproduce an output on our own machines. This means that if you create a vector in a previous code snippet and then supply it as an argument in another code snippet, you are going to want to make sure that both of these lines of code appear in your reproducible example. Further, if the functions that you are using are from certain packages, you will want to make sure the `library()` call to load that package is in your reproducible example.
 
-## Exercise 4: Condense the following lines of code into one code snippet in order to create a reproducible example of the code. Paste the reproducible example into the forum that I created at the bottom of our Moodle page. 
+## Exercise 4: Condense the following lines of code into one code snippet in order to create a reproducible example of the code. Copy the code to your clipboard and then call `reprex(venue="html")` in the Console. Paste the reproducible example into the forum that I created at the bottom of our Moodle page. Click the <> button to paste as HTML code. You may need to click the first button in the editor to show all formatting options in order to see the <> button. 
 
 ```{r}
 vector_reprex <- c(1, 2, 3, 4, 5)
