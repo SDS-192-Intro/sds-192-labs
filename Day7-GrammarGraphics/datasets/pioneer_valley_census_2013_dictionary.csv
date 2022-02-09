@@ -1,0 +1,20 @@
+﻿Topic,Variable Name,Description
+,COMMUNITY,
+,YEAR,
+,TIME_TYPE,
+Housing,CEN_MEDRENT,Median Gross Rent
+Housing,CEN_MEDOWNVAL,Median Value-Owner-Occupied Housing
+Housing,CEN_HUYEARBLT,Median Year Housing Structures Built
+Housing,RENT_COSTS30,Percent Housing Cost Burdened Renters
+Labor Force & Emp,MEDAGE_WF,Median Age of Workforce (For Population 16-64)
+Transportation,PER_COMMNOTSNGLCAR,Commuters-All But Alone By Car (%)
+Transportation,PER_COMMALONECAR,Commuters-Alone by Car (%)
+Transportation,PER_COMMBIKE,Commuters-Bike (%)
+Transportation,PER_COMMCARPOOL,Commuters-Carpool (%)
+Transportation,PER_COMMOTHER,Commuters-Other (%)
+Transportation,PER_COMMPUBTRANS,Commuters-Public Transit (%)
+Transportation,PER_COMMWALK,Commuters-Walk (%)
+Transportation,PER_COMMWORKHOME,Commuters-Work at Home (%)
+Transportation,AVG_COMMUTETIME,Mean Commute Time
+Transportation,WORK_OUTCOMM,Percent Work Outside Community They Live In
+Transportation,WORK_INCOMM,Percent Work Within Community They Live In

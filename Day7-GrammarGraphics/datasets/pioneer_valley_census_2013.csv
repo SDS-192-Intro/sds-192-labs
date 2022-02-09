@@ -1,0 +1,72 @@
+﻿,,,,,,Housing,Housing,Housing,Housing,Labor Force & Emp,Transportation,Transportation,Transportation,Transportation,Transportation,Transportation,Transportation,Transportation,Transportation,Transportation,Transportation
+,,,,,,Median Gross Rent,Median Value-Owner-Occupied Housing,Median Year Housing Structures Built,Percent Housing Cost Burdened Renters,Median Age of Workforce (For Population 16-64),Commuters-All But Alone By Car (%),Commuters-Alone by Car (%),Commuters-Bike (%),Commuters-Carpool (%),Commuters-Other (%),Commuters-Public Transit (%),Commuters-Walk (%),Commuters-Work at Home (%),Mean Commute Time,Percent Work Outside Community They Live In,Percent Work Within Community They Live In
+LEVELCD_NAME,STATE,COUNTY,COMMUNITY,YEAR,TIME_TYPE,CEN_MEDRENT,CEN_MEDOWNVAL,CEN_HUYEARBLT,RENT_COSTS30,MEDAGE_WF,PER_COMMNOTSNGLCAR,PER_COMMALONECAR,PER_COMMBIKE,PER_COMMCARPOOL,PER_COMMOTHER,PER_COMMPUBTRANS,PER_COMMWALK,PER_COMMWORKHOME,AVG_COMMUTETIME,WORK_OUTCOMM,WORK_INCOMM
+Municipality,MA,Franklin,Ashfield,2013,5-Year-Estimates,888,287500,1948,0.4,48.8,0.2,0.8,0,0,0,0,0,0.1,32.1,0.7,0.3
+Municipality,MA,Franklin,Bernardston,2013,5-Year-Estimates,1170,227100,1963,0.5,48.2,0.1,0.9,0,0,0,0,0,0.1,19.9,0.8,0.2
+Municipality,MA,Franklin,Buckland,2013,5-Year-Estimates,854,214600,1945,0.5,44.9,0.2,0.8,0,0.1,0,0,0,0,29.9,0.8,0.2
+Municipality,MA,Franklin,Charlemont,2013,5-Year-Estimates,729,221600,1954,0.5,45.2,0.3,0.7,0,0.2,0,0,0.1,0.1,28.2,0.7,0.3
+Municipality,MA,Franklin,Colrain,2013,5-Year-Estimates,961,188900,1963,0.6,45.9,0.2,0.8,0,0.1,0,0,0,0,30.1,0.9,0.1
+Municipality,MA,Franklin,Conway,2013,5-Year-Estimates,1060,288100,1972,0.3,48.9,0.2,0.8,0,0.1,0,0,0,0.1,25.6,0.8,0.2
+Municipality,MA,Franklin,Deerfield,2013,5-Year-Estimates,921,284700,1966,0.5,46.1,0.3,0.7,0,0.1,0,0,0.1,0.1,19.3,0.6,0.4
+Municipality,MA,Franklin,Erving,2013,5-Year-Estimates,866,195800,1956,0.5,42,0.1,0.9,0,0.1,0,0,0,0,24.3,0.9,0.1
+Municipality,MA,Franklin,Gill,2013,5-Year-Estimates,1018,213800,1970,0.5,47.4,0.3,0.7,0,0.1,0,0,0.1,0.1,20.9,0.8,0.2
+Municipality,MA,Franklin,Greenfield,2013,5-Year-Estimates,789,185200,1943,0.4,42.6,0.2,0.8,0,0.1,0,0,0.1,0,22.9,0.5,0.5
+Municipality,MA,Franklin,Hawley,2013,5-Year-Estimates,850,231500,1970,0.5,48.9,0.3,0.7,0,0.1,0,0,0.1,0.1,38,0.8,0.2
+Municipality,MA,Franklin,Heath,2013,5-Year-Estimates,828,224300,1980,0.6,50.7,0.2,0.8,0,0.1,0,0,0,0,38.7,0.8,0.2
+Municipality,MA,Franklin,Leverett,2013,5-Year-Estimates,992,341700,1973,0.5,48.5,0.2,0.8,0,0.1,0,0,0,0.1,26.3,0.8,0.2
+Municipality,MA,Franklin,Leyden,2013,5-Year-Estimates,763,249000,1974,0.2,51.3,0.1,0.9,0,0,0,0,0,0.1,27.6,0.9,0.1
+Municipality,MA,Franklin,Monroe,2013,5-Year-Estimates,833,145000,1949,0,35.8,0.1,0.9,0,0,0,0,0.1,0,36.3,0.9,0.1
+Municipality,MA,Franklin,Montague,2013,5-Year-Estimates,810,204100,1950,0.5,43,0.2,0.8,0,0.1,0,0,0,0,20.7,0.8,0.2
+Municipality,MA,Franklin,New Salem,2013,5-Year-Estimates,1711,235100,1972,0.7,47.3,0.2,0.8,0,0.1,0,0,0,0,35.8,0.9,0.1
+Municipality,MA,Franklin,Northfield,2013,5-Year-Estimates,760,241400,1955,0.3,45.4,0.2,0.8,0,0.1,0,0,0,0.1,25.2,0.8,0.2
+Municipality,MA,Franklin,Orange,2013,5-Year-Estimates,697,162400,1957,0.5,41.8,0.2,0.8,0,0.1,0,0,0,0.1,27.4,0.6,0.4
+Municipality,MA,Franklin,Rowe,2013,5-Year-Estimates,1038,203100,1958,0.5,46.4,0.2,0.8,0,0,0,0,0.1,0,27.7,0.7,0.3
+Municipality,MA,Franklin,Shelburne,2013,5-Year-Estimates,874,259000,1939,0.4,48.1,0.3,0.7,0,0.1,0,0,0,0.1,24.8,0.7,0.3
+Municipality,MA,Franklin,Shutesbury,2013,5-Year-Estimates,1125,266000,1978,0.6,50.2,0.2,0.8,0,0.1,0,0,0,0.1,27.9,0.9,0.1
+Municipality,MA,Franklin,Sunderland,2013,5-Year-Estimates,1097,288500,1973,0.7,26.9,0.4,0.6,0,0.1,0,0.2,0,0,22.1,0.9,0.1
+Municipality,MA,Franklin,Warwick,2013,5-Year-Estimates,1073,189100,1959,0.7,53,0.1,0.9,0,0,0,0,0,0.1,31.6,0.9,0.1
+Municipality,MA,Franklin,Wendell,2013,5-Year-Estimates,854,197900,1974,0.8,48,0.3,0.7,0,0,0,0,0,0.2,33.2,0.7,0.3
+Municipality,MA,Franklin,Whately,2013,5-Year-Estimates,1168,291100,1971,0.4,50.2,0.2,0.8,0,0.1,0,0,0,0.1,23.1,0.8,0.2
+Municipality,MA,Hampden,Agawam,2013,5-Year-Estimates,852,229200,1970,0.5,44.1,0.1,0.9,0,0.1,0,0,0,0,21.6,0.8,0.2
+Municipality,MA,Hampden,Blandford,2013,5-Year-Estimates,540,246300,1962,0,48,0.1,0.9,0,0.1,0,0,0,0,32,0.9,0.1
+Municipality,MA,Hampden,Brimfield,2013,5-Year-Estimates,748,264800,1975,0.6,45.6,0.2,0.8,0,0,0,0,0,0.1,36.1,0.8,0.2
+Municipality,MA,Hampden,Chester,2013,5-Year-Estimates,833,199600,1949,0.7,47,0.2,0.8,0,0.1,0,0,0,0,36.4,0.9,0.1
+Municipality,MA,Hampden,Chicopee,2013,5-Year-Estimates,794,177600,1955,0.5,40.7,0.1,0.9,0,0.1,0,0,0,0,20.6,0.7,0.3
+Municipality,MA,Hampden,East Longmeadow,2013,5-Year-Estimates,1017,256300,1964,0.6,46.4,0.1,0.9,0,0.1,0,0,0,0,22.9,0.8,0.2
+Municipality,MA,Hampden,Granville,2013,5-Year-Estimates,791,274500,1966,0.3,46.8,0.2,0.8,0,0.1,0,0,0,0.1,31.7,0.8,0.2
+Municipality,MA,Hampden,Hampden,2013,5-Year-Estimates,592,268600,1966,0.5,47,0.1,0.9,0,0.1,0,0,0,0,25.4,0.8,0.2
+Municipality,MA,Hampden,Holland,2013,5-Year-Estimates,883,208900,1967,0.4,43.5,0.2,0.8,0,0.1,0,0,0,0,32.5,0.9,0.1
+Municipality,MA,Hampden,Holyoke,2013,5-Year-Estimates,658,187200,1944,0.5,39.2,0.2,0.8,0,0.1,0,0,0,0,20.5,0.6,0.4
+Municipality,MA,Hampden,Longmeadow,2013,5-Year-Estimates,1342,338800,1958,0.7,45.4,0.1,0.9,0,0,0,0,0,0.1,21.1,0.8,0.2
+Municipality,MA,Hampden,Ludlow,2013,5-Year-Estimates,840,225500,1963,0.4,44.2,0.1,0.9,0,0.1,0,0,0,0,22.7,0.8,0.2
+Municipality,MA,Hampden,Monson,2013,5-Year-Estimates,865,242500,1971,0.4,45.2,0.1,0.9,0,0.1,0,0,0,0,30.9,0.8,0.2
+Municipality,MA,Hampden,Montgomery,2013,5-Year-Estimates,950,286100,1980,0.3,47,0.1,0.9,0,0.1,0,0,0,0,34,0.9,0.1
+Municipality,MA,Hampden,Palmer,2013,5-Year-Estimates,759,188900,1957,0.5,43.7,0.2,0.8,0,0.1,0,0,0,0.1,27.4,0.7,0.3
+Municipality,MA,Hampden,Russell,2013,5-Year-Estimates,864,219500,1965,0.3,46.1,0.2,0.8,0,0.1,0,0,0,0,31.4,0.9,0.1
+Municipality,MA,Hampden,Southwick,2013,5-Year-Estimates,934,259400,1974,0.4,43.8,0.1,0.9,0,0.1,0,0,0,0,25.1,0.8,0.2
+Municipality,MA,Hampden,Springfield,2013,5-Year-Estimates,804,147000,1948,0.6,37.9,0.2,0.8,0,0.1,0,0.1,0,0,21.7,0.5,0.5
+Municipality,MA,Hampden,Tolland,2013,5-Year-Estimates,,322200,1980,1,46,0.2,0.8,0,0.1,0,0,0,0.1,33.9,0.8,0.2
+Municipality,MA,Hampden,Wales,2013,5-Year-Estimates,729,206500,1973,0.3,44.7,0.2,0.8,0,0.1,0,0,0,0,41.1,0.9,0.1
+Municipality,MA,Hampden,West Springfield,2013,5-Year-Estimates,801,201000,1956,0.4,41.1,0.1,0.9,0,0.1,0,0,0,0,19.6,0.7,0.3
+Municipality,MA,Hampden,Westfield,2013,5-Year-Estimates,832,222700,1963,0.6,40.6,0.2,0.8,0,0.1,0,0,0,0,24,0.6,0.4
+Municipality,MA,Hampden,Wilbraham,2013,5-Year-Estimates,747,286400,1964,0.4,47.2,0.1,0.9,0,0.1,0,0,0,0.1,24.2,0.8,0.2
+Municipality,MA,Hampshire,Amherst,2013,5-Year-Estimates,1122,340100,1972,0.7,21.4,0.5,0.5,0,0.1,0,0.1,0.2,0.1,20,0.4,0.6
+Municipality,MA,Hampshire,Belchertown,2013,5-Year-Estimates,860,260000,1982,0.5,45,0.2,0.8,0,0.1,0,0,0,0,27.9,0.8,0.2
+Municipality,MA,Hampshire,Chesterfield,2013,5-Year-Estimates,1006,254100,1968,0.5,49.6,0.2,0.8,0,0.1,0,0,0,0.1,31.9,0.9,0.1
+Municipality,MA,Hampshire,Cummington,2013,5-Year-Estimates,761,280600,1958,0.4,46.8,0.3,0.7,0,0.1,0,0,0.1,0.1,33.9,0.7,0.3
+Municipality,MA,Hampshire,Easthampton,2013,5-Year-Estimates,872,231600,1960,0.4,41.5,0.2,0.8,0,0.1,0,0,0,0,22.5,0.8,0.2
+Municipality,MA,Hampshire,Goshen,2013,5-Year-Estimates,891,247000,1959,0.5,45.8,0.2,0.8,0,0.1,0,0,0,0.1,33.7,0.8,0.2
+Municipality,MA,Hampshire,Granby,2013,5-Year-Estimates,741,244800,1963,0.7,44.8,0.1,0.9,0,0,0,0,0,0.1,26.1,0.8,0.2
+Municipality,MA,Hampshire,Hadley,2013,5-Year-Estimates,898,326400,1964,0.4,42.8,0.2,0.8,0,0.1,0,0,0,0,17.8,0.8,0.2
+Municipality,MA,Hampshire,Hatfield,2013,5-Year-Estimates,873,291500,1961,0.5,49.5,0.2,0.8,0,0.1,0,0,0,0.1,20.5,0.7,0.3
+Municipality,MA,Hampshire,Huntington,2013,5-Year-Estimates,700,212400,1962,0.5,43.9,0.2,0.8,0,0.1,0,0,0,0,32.4,0.9,0.1
+Municipality,MA,Hampshire,Middlefield,2013,5-Year-Estimates,631,217700,1976,0.2,53.7,0.1,0.9,0,0,0,0,0,0,40.4,0.9,0.1
+Municipality,MA,Hampshire,Northampton,2013,5-Year-Estimates,960,284400,1946,0.5,38.5,0.4,0.6,0,0.1,0,0,0.1,0.1,21,0.5,0.5
+Municipality,MA,Hampshire,Pelham,2013,5-Year-Estimates,1383,329200,1973,0.5,49.7,0.2,0.8,0,0,0,0,0,0.1,24.2,0.8,0.2
+Municipality,MA,Hampshire,Plainfield,2013,5-Year-Estimates,667,264900,1965,0.7,51.3,0.2,0.8,0,0.1,0,0,0,0.1,35.2,0.8,0.2
+Municipality,MA,Hampshire,South Hadley,2013,5-Year-Estimates,830,234800,1957,0.5,40.4,0.2,0.8,0,0.1,0,0,0.1,0.1,20.9,0.7,0.3
+Municipality,MA,Hampshire,Southampton,2013,5-Year-Estimates,1192,307300,1978,0.3,43.7,0.1,0.9,0,0.1,0,0,0,0,24.7,0.9,0.1
+Municipality,MA,Hampshire,Ware,2013,5-Year-Estimates,753,197400,1964,0.5,45.7,0.1,0.9,0,0,0,0,0,0,29.3,0.7,0.3
+Municipality,MA,Hampshire,Westhampton,2013,5-Year-Estimates,1292,312000,1973,0.4,47.8,0.2,0.8,0,0.1,0,0,0,0.1,29,0.9,0.1
+Municipality,MA,Hampshire,Williamsburg,2013,5-Year-Estimates,763,262100,1953,0.6,47.4,0.2,0.8,0,0.1,0,0,0,0.1,24.6,0.8,0.2
+Municipality,MA,Hampshire,Worthington,2013,5-Year-Estimates,625,248300,1960,0.3,50.6,0.2,0.8,0,0.1,0,0,0,0.1,37.1,0.8,0.2
