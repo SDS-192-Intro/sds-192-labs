@@ -100,7 +100,7 @@ ggplot(ma_county_health_2021,
        aes(x = Name, y = HIV_prevalence_raw_value)) +
   geom_col() +
   coord_flip() +
-  labs(title = "Health Measures by County, US, 2021",
+  labs(title = "Health Measures by County, Massachusetts, 2021",
        x = "County Name", 
        y = "HIV Prevalence Measure")
 ```
@@ -115,7 +115,7 @@ ggplot(ma_county_health_2021,
 ggplot(ma_county_health_2021, 
        aes(x = Food_insecurity_raw_value, y = Child_mortality_raw_value)) +
   geom_point() +
-  labs(title = "Health Measures by County, US, 2021",
+  labs(title = "Health Measures by County, Massachusetts, 2021",
        x = "Food Insecurity Measure", 
        y = "Child Mortality Measure")
 ```
@@ -133,7 +133,7 @@ ggplot(ne_county_health_2021,
        aes(x = Unemployment_raw_value, y = Uninsured_raw_value)) +
   geom_point() +
   geom_smooth() +
-  labs(title = "Health Measures by County, US, 2021",
+  labs(title = "Health Measures by County, New England, 2021",
        x = "Unemployment Measure", 
        y = "Uninsured Measure",
        subtitle = "County Health Rankings, University of Wisconsin Population Health Institute") +
@@ -159,7 +159,7 @@ ggplot(ne_county_health_2021,
        aes(x = Poor_physical_health_days_raw_value, 
            y = Life_expectancy_raw_value)) +
   geom_point() +
-  labs(title = "Health Measures by County, US, 2021",
+  labs(title = "Health Measures by County, New England, 2021",
        x = "Average number of physically unhealthy days reported in past 30 days (age-adjusted)", 
        y = "Life Expectancy",
        subtitle = "County Health Rankings, University of Wisconsin Population Health Institute") +
@@ -258,7 +258,7 @@ ggplot(ne_county_health_2021,
        aes(x = State_Abbreviation, 
            y = Flu_vaccinations_raw_value)) +
   geom_point() +
-  labs(title = "Health Measures by County, US, 2021",
+  labs(title = "Health Measures by County, New England, 2021",
        x = "State", 
        y = "Flu Vaccination Measure",
        subtitle = "County Health Rankings, University of Wisconsin Population Health Institute") +
@@ -272,7 +272,7 @@ ggplot(ne_county_health_2021,
        aes(x = State_Abbreviation, 
            y = Flu_vaccinations_raw_value)) +
   geom_point(alpha = 0.35) +
-  labs(title = "Health Measures by County, US, 2021",
+  labs(title = "Health Measures by County, New England, 2021",
        x = "State", 
        y = "Flu Vaccination Measure",
        subtitle = "County Health Rankings, University of Wisconsin Population Health Institute") +
@@ -289,3 +289,18 @@ Copy the plot that I created above into the code snippet below. Using the cheats
 ```
 
 > Reflection: Which New England states have counties with the highest flu vaccination rates? In which states are there greater disparities in vaccination rates across counties?
+
+# Data Visualization Challenge #1 (Due by the beginning of next Wednesday's class)
+
+**This activity is completely optional.** If you'd like to participate - either independently or as a team - design a plot that visualizes the relationship between at least two variables in this lab's dataset. Add a caption describing the relationship between the variables in the plot. Be careful not to confuse correlation with causation when writing this caption! Also be careful not to make claims without evidence to back them up! I imagine that the best captions will include a bit of research into why certain disparities exist. Be sure to cite your sources in the caption. 
+
+Export your plot (via the Export button on the Plots tab in the Files pane), and post your plot to our #SDS-192-discussion-threads channel. List team members if you worked as a group. In the first comment, reprex() the code you used to produce the plot. While we will celebrate all labor in producing these plots through Slack reaction buttons, there will be three superlatives for our first data challenge:
+
+* Most Eye-opening: This will be awarded to the data visualization that produces the most compelling argument and/or provokes the deepest reflection.
+
+* Most Effective Design: This will be awarded to the data visualization that makes the most effective use of styling attributes and visual cues.   
+
+* Most Informative Interpretation: This will be awarded to the data visualization that includes the most informative and well-researched caption. 
+
+Happy coding!
+
