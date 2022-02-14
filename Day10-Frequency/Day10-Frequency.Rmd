@@ -1,0 +1,83 @@
+---
+title: "Day Ten: Frequency"
+subtitle: "SDS 192: Introduction to Data Science"
+author: |
+  Lindsay Poirier<br/>
+  <span style = 'font-size: 70%;'>
+  [Statistical & Data Sciences](http://www.smith.edu/sds), Smith College<br/>
+  </span>
+date: |
+  Spring 2022<br/>
+output: pdf_document
+---
+
+# Step 1: Install and load packages
+
+In your console install the Spotify R package:
+
+`install.packages("spotifyr")`
+
+Then load the packages for this lab by running the code below. 
+
+```{r}
+#Load packates
+library(tidyverse)
+library(spotifyr)
+```
+
+# Step 2: Create an Spotify Developer Account
+
+1. Log-in to Spotify.com or create an account
+2. Agree to the Terms and Conditions
+3. Create an app named "SDS 192 Class Project". You can indicate that this is a "Project for SDS 192 class"
+4. Click "Show Client Secret"
+5. Copy client id and secret below, and then run the code chunk.
+
+```{r}
+id <- 'COPY_ID_HERE'
+secret <- 'COPY_SECRET_HERE'
+Sys.setenv(SPOTIFY_CLIENT_ID = id)
+Sys.setenv(SPOTIFY_CLIENT_SECRET = secret)
+access_token <- get_spotify_access_token()
+```
+
+# Step 3: Get song features for your favorite artist
+
+Replace the text FILL FAVORITE ARTIST NAME HERE below with the name of your favorite artist and then run the code chunk. 
+
+```{r}
+artist <- get_artist_audio_features(artist = "FILL FAVORITE ARTIST NAME HERE") %>%
+  select(-c(album_images, artists, available_markets))
+```
+
+# Step 4: Create a histogram visualizing the distribution of values in a song feature of your choice
+
+Be sure to add labels to your plot. 
+
+```{r}
+# Fill plot here. 
+```
+
+# Step 5: Facet your previous plot by album name
+
+Be sure to add labels to your plot. 
+
+```{r}
+# Fill plot here. 
+```
+
+Turn to a neighbor and discuss the plots. 
+* What do the distributions indicate?
+* What do you learn when comparing distributions across albums?
+
+# Step 6: Create a stacked, dodged, or filled barplot visualizing the frequency of songs in each album and key for this artist.
+
+Be sure to add labels to your plot. 
+
+```{r}
+# Fill plot here. 
+```
+
+Turn to a neighbor and discuss the plots. 
+* What do the frequencies indicate?
+* What do you learn when comparing frequencies across albums?
