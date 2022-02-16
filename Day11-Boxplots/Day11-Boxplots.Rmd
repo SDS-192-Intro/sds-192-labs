@@ -1,0 +1,113 @@
+---
+title: "Day Eleven: Boxplots"
+subtitle: "SDS 192: Introduction to Data Science"
+author: |
+  Lindsay Poirier<br/>
+  <span style = 'font-size: 70%;'>
+  [Statistical & Data Sciences](http://www.smith.edu/sds), Smith College<br/>
+  </span>
+date: |
+  Spring 2022<br/>
+output: pdf_document
+---
+
+# Step 1: Load packages
+
+```{r}
+#Load packates
+library(tidyverse)
+library(spotifyr)
+```
+
+# Step 2: Create an Spotify Developer Account
+
+Copy client id and secret from your previous lab into the chunk below, and then run the code chunk.
+
+```{r}
+id <- 'COPY_ID_HERE'
+secret <- 'COPY_SECRET_HERE'
+Sys.setenv(SPOTIFY_CLIENT_ID = id)
+Sys.setenv(SPOTIFY_CLIENT_SECRET = secret)
+access_token <- get_spotify_access_token()
+```
+
+# Step 3: Get song features for your favorite artist
+
+Replace the text FILL FAVORITE ARTIST NAME HERE below with the name of your favorite artist and then run the code chunk. 
+
+```{r}
+artist <- get_artist_audio_features(artist = "FILL FAVORITE ARTIST NAME HERE") %>%
+  select(-c(album_images, artists, available_markets))
+```
+
+# Step 4: Create grouped boxplots visualizing the distribution of values in a song feature of your choice, grouped by album name
+
+> Refer to the [`ggplot()` cheatsheet](https://github.com/rstudio/cheatsheets/blob/main/data-visualization-2.1.pdf) to find the geom function you need to create this plot. 
+
+Be sure to add labels to your plot. 
+
+```{r}
+# Fill plot here. 
+```
+
+# Step 5: Interpret results
+
+Turn to a neighbor and discuss the plots. 
+* Check for outliers.
+* Compare medians. 
+* Compare the ranges.
+* Compare the IQRs.
+* Compare the symmetry. 
+
+> Call us over if you are having trouble interpreting!
+
+# Bonus: Analyze your own Spotify data!
+
+> This is optional for those folks that regularly use Spotify would like to learn more about their music tastes!
+
+1. Navigate to your SDS 192 project in the Spotify developer account you created on Monday.
+2. Click Edit Settings. Under the heading **Redirect URIs** copy and paste this URL: https://localhost:1410/ Click Save. 
+3. Below replace `FILL USER NAME HERE` with your Spotify username. This is the ID that appears in the upper right hand corner when you log into your Spotify account (not your developer account.) Run the code chunk below. You will be redirected a web browser window confirming authentication. Return back to RStudio and run this code chunk again to load the data. 
+
+```{r}
+my_spotify <- get_user_audio_features(
+  username = "FILL USER NAME HERE",
+  authorization = get_spotify_access_token()
+) %>%
+  select(-c(images, track.available_markets, track.artists))
+```
+
+This will create a data frame with the songs your user account has stored in Spotify playlists. 
+
+4. Create grouped boxplots visualizing the distribution of values in a song feature of your choice, grouped by playlist name.
+
+```{r}
+#Create boxplot here
+```
+
+# Bonus: Analyze playlist Spotify data!
+
+> This is optional for those folks that don't regularly use Spotify and would like to learn more about the music features in playlists!
+
+1. Navigate to Spotify.com and create an account.
+2. Navigate to your SDS 192 project in the Spotify developer account you created on Monday.
+3. Click Edit Settings. Under the heading **Redirect URIs** copy and paste this URL: https://localhost:1410/ Click Save. 
+4. Below replace `FILL USER NAME HERE` with your Spotify username. This is the ID that appears in the upper right hand corner when you log into your Spotify account (not your developer account.) Run the code chunk below. You will be redirected a web browser window confirming authentication. Return back to RStudio and run this code chunk again to load the data. 
+5. Search Spotify for your favorite music genre and select a *playlist* from the search. Playlists may be a ways down in the search results. 
+6. When you click on a playlist, notice the URL in the navigation bar of your web browser. It should look something like spotify.com/playlist/LONG_STRING_OF_CHARACTERS. Copy the long string of characters at the end of the URL, and paste it into the function below. 
+
+```{r}
+playlist <- get_playlist_audio_features(
+  username = "FILL USER NAME HERE",
+  playlist_uris = "FILL LONG STRING OF CHARACTERS FROM URL",
+  authorization = get_spotify_access_token()
+) %>%
+  select(-c(track.artists, track.available_markets, track.album.artists, track.album.available_markets, track.album.images))
+```
+
+7. Create a visualization of some song features of your choice
+
+```{r}
+#Create visualization here
+```
+
