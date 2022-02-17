@@ -1,0 +1,226 @@
+---
+title: "Day Twelve: Multivariate"
+subtitle: "SDS 192: Introduction to Data Science"
+author: |
+  Lindsay Poirier<br/>
+  <span style = 'font-size: 70%;'>
+  [Statistical & Data Sciences](http://www.smith.edu/sds), Smith College<br/>
+  </span>
+date: |
+  Spring 2022<br/>
+output: pdf_document
+---
+
+# Introduction
+
+The goal of this lab is to provide you with practice in producing data visualizations that help to answer a research question. Topics that will be covered include:
+
+1. Practice producing and interpreting univariate plots.
+2. Practice producing and interpreting multivariate plots.
+3. Practice labeling plots
+4. Practice in visualization aesthetics.
+
+Today, we are prioritizing **joy**!
+
+If you are a regular Spotify user, today's research question will be:
+How joyful are my Spotify playlists?
+
+If you are not a regular Spotify user, today's research question will be: How joyful are popular Spotify playlists in my favorite music genre?
+
+The music feature from Spotify's data that serves as a measure of joy is called *valence*. This is the description from their API documentation for valence:
+
+> A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).
+
+(Pretty vague if you ask me, but today we'll go with it.) 
+
+# Step 1: Load packages
+
+```{r}
+#Load packates
+library(tidyverse)
+library(spotifyr)
+```
+
+# Step 2: Add your Spotify credentials
+
+Copy client id and secret from your previous lab into the chunk below, and then run the code chunk.
+
+```{r}
+id <- 'COPY_ID_HERE'
+secret <- 'COPY_SECRET_HERE'
+Sys.setenv(SPOTIFY_CLIENT_ID = id)
+Sys.setenv(SPOTIFY_CLIENT_SECRET = secret)
+access_token <- get_spotify_access_token()
+```
+
+# Step 3, Option 1: Analyze your own Spotify data!
+
+1. Navigate to your SDS 192 project in the Spotify developer account you created on Monday.
+2. Click Edit Settings. Under the heading **Redirect URIs** copy and paste this URL: https://localhost:1410/ Click Save. This is going to allow us to authenticate our Spotify accounts through our local computers. 
+3. Below replace `FILL USER NAME HERE` with your Spotify username. This is the ID that appears in the upper right hand corner when you log into your Spotify account (not your developer account.) Run the code chunk below. You will be redirected a web browser window confirming authentication. Return back to RStudio and run this code chunk again to load the data. 
+
+```{r getdata1, include=FALSE}
+spotify_playlists <- get_user_audio_features(
+  username = "FILL USER NAME HERE",
+  authorization = get_spotify_access_token()
+) %>%
+  select(-c(images, 
+            track.available_markets, 
+            track.artists, 
+            track.album.artists, 
+            track.album.available_markets, 
+            track.album.images))
+```
+
+This will create a data frame with the songs your user account has stored in Spotify playlists. 
+
+# Step 3, Option 2: Analyze playlist Spotify data!
+
+1. Navigate to Spotify.com and create an account.
+2. Navigate to your SDS 192 project in the Spotify developer account you created on Monday.
+3. Click Edit Settings. Under the heading **Redirect URIs** copy and paste this URL: https://localhost:1410/ Click Save. 
+4. Below replace `FILL USER NAME HERE` with your Spotify username. This is the ID that appears in the upper right hand corner when you log into your Spotify account (not your developer account.)
+5. Search Spotify for your favorite music genre and select three *playlists* from the search. Playlists may be a ways down in the search results. 
+6. When you click on a playlist, notice the URL in the navigation bar of your web browser. It should look something like spotify.com/playlist/LONG_STRING_OF_CHARACTERS. Copy the long string of characters at the end of the URL, and paste it into the function below where it says `FILL LONG STRING OF CHARACTERS FROM URL`. Repeat this for the other two playlists.
+7. Run the code chunk below. You will be redirected a web browser window confirming authentication. Return back to RStudio and run this code chunk again to load the data. 
+
+```{r getdata2, include=FALSE}
+spotify_playlists <- get_playlist_audio_features(
+  username = "FILL USER NAME HERE",
+  playlist_uris = c("FILL LONG STRING OF CHARACTERS FROM URL 1",
+                    "FILL LONG STRING OF CHARACTERS FROM URL 2",
+                    "FILL LONG STRING OF CHARACTERS FROM URL 3"),
+  authorization = get_spotify_access_token()
+) %>%
+  select(-c(track.artists, 
+            track.available_markets, 
+            track.album.artists, 
+            track.album.available_markets, 
+            track.album.images))
+```
+
+Today we will be mostly practicing plots you've already learned. However, we will learn one new skill - reordering a *categorical* axis based on numeric values. We will do this with the `reorder()` function. 
+
+The `reorder()` function has three arguments:
+* the vector of categorical values to be reordered,
+* a vector that will serve as the basis for reordering, 
+* and a function to determine how values will be reordered. 
+
+So let's say I created the following grouped boxplots visualizing the distribution of energy across key names, and I wanted to reorder the categorical axis so that the key name with the highest median energy would appear first and lowest median energy would appear last (and all other medians ordered accordingly in between).
+
+```{r}
+spotify_playlists %>%
+  ggplot(aes(x = key_name, y = energy)) +
+  geom_boxplot() +
+  coord_flip() +
+  labs(title = "Distribution of Song Energy per Key Name in Spotify Playlists, 2022",
+       x = "Key Name", 
+       y = "Energy")
+```
+
+I want to reorder my x-axis, so I will place the `reorder()` function around my x aesthetic, and assign the following arguments:
+
+* the vector of categorical values to be reordered: `key_name`
+* a vector that will serve as the basis for reordering: `energy`
+* and a function to determine how values will be reordered: `median`
+
+```{r}
+spotify_playlists %>%
+  ggplot(aes(x = reorder(key_name, energy, median), y = energy)) +
+  geom_boxplot() +
+  coord_flip() +
+  labs(title = "Distribution of Song Energy per Key Name in Spotify Playlists, 2022",
+       x = "Key Name", 
+       y = "Energy")
+```
+
+What about reordering based on the height of a bar plot? 
+
+```{r}
+spotify_playlists %>%
+  ggplot(aes(x = key_name)) +
+  geom_bar(color = "white") +
+  coord_flip() +
+  labs(title = "Count of Songs in Each Key Mode of Spotify Playlists, 2022",
+       x = "Key Mode", 
+       y = "Count of Songs")
+```
+
+Notice how here we don't have a separate vector to serve as the basis for reordering. Actually, we want to reorder based on the `length` of the *same vector* we want reordered:
+
+I want to reorder my x-axis, so I will place the `reorder()` function around my x aesthetic, and assign the following arguments:
+
+* the vector of categorical values to be reordered: `key_name`
+* a vector of that will serve as the basis for reordering: `key_name`
+* and a function to determine how values will be reordered: `length`
+
+```{r}
+spotify_playlists %>%
+  ggplot(aes(x = reorder(key_name, key_name, length))) +
+  geom_bar(color = "white") +
+  coord_flip() +
+  labs(title = "Count of Songs in Each Key Mode of Spotify Playlists, 2022",
+       x = "Key Mode", 
+       y = "Count of Songs")
+```
+
+# Step Four: How many songs are in each playlist? Create a plot to visualize this, and order the results by the number of songs. 
+
+Be sure to give it a descriptive title and labels covering all 5 essential components of data context.
+
+```{r plot1}
+# Create plot here
+```
+
+# Step Five: What is the distribution of valence across all of the songs (in intervals of 0.1 valence)? Create a plot to visualize this.
+
+Be sure to give it a descriptive title and labels covering all 5 essential components of data context.
+
+```{r plot2}
+# Create plot here
+```
+
+# Step Six: What is the distribution of valence across all of the songs (in intervals of 0.1 valence) *in each playlist*? Create a plot to visualize this.
+
+Be sure to give it a descriptive title and labels covering all 5 essential components of data context.
+
+```{r plot3}
+# Create plot here
+```
+
+# Step Seven: What are differences in the summary statistics (max, min, median, etc.) of the valence of songs in each playlist? Create a plot to visualize this, and order the results by the median of valence. 
+
+Be sure to give it a descriptive title and labels covering all 5 essential components of data context.
+
+```{r plot4}
+# Create plot here
+```
+
+# Step Eight: Do happier songs tend to be more danceable *in each playlist*? Create a plot to visualize this.
+
+Be sure to give it a descriptive title and labels covering all 5 essential components of data context. Also be sure to adjust your plot to address overplotting. 
+
+```{r plot5}
+# Create plot here
+```
+
+> Note: You may wish to add a trend line to your plot with method="lm"!
+
+# Step Nine: Do songs composed in the minor or major mode tend to be happier *in each playlist*? Create a plot to visualize this.
+
+```{r plot6}
+# Create plot here
+```
+
+# Step Ten: Do happier songs tend to have a higher tempo across all playlists? What role might the song's mode play? Create a plot to visualize this.  
+
+Be sure to give it a descriptive title and labels covering all 5 essential components of data context. Also be sure to adjust your plot to address overplotting. 
+
+```{r plot7}
+#Create boxplot here
+```
+
+> Note: You may wish to add a trend line to your plot with method="lm"!
+
+> What did you learn about joy across these playlists?
+

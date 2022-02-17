@@ -1,0 +1,69 @@
+---
+title: "Day Eleven: Boxplots"
+subtitle: "SDS 192: Introduction to Data Science"
+author: |
+  Lindsay Poirier<br/>
+  <span style = 'font-size: 70%;'>
+  [Statistical & Data Sciences](http://www.smith.edu/sds), Smith College<br/>
+  </span>
+date: |
+  Spring 2022<br/>
+output: pdf_document
+---
+
+# Step 1: Load packages
+
+```{r}
+#Load packates
+library(tidyverse)
+library(spotifyr)
+```
+
+# Step 2: Create an Spotify Developer Account
+
+Copy client id and secret from your previous lab into the chunk below, and then run the code chunk.
+
+```{r}
+id <- Sys.getenv("SPOTIFY_CLIENT_ID")
+secret <- Sys.getenv("SPOTIFY_CLIENT_SECRET")
+Sys.setenv(SPOTIFY_CLIENT_ID = id)
+Sys.setenv(SPOTIFY_CLIENT_SECRET = secret)
+access_token <- get_spotify_access_token()
+```
+
+# Step 3: Get song features for your favorite artist
+
+Replace the text FILL FAVORITE ARTIST NAME HERE below with the name of your favorite artist and then run the code chunk. 
+
+```{r}
+artist <- get_artist_audio_features(artist = "Michael Jackson") %>%
+  select(-c(album_images, artists, available_markets))
+```
+
+# Step 4: Create grouped boxplots visualizing the distribution of values in a song feature of your choice, grouped by album name
+
+> Refer to the [`ggplot()` cheatsheet](https://github.com/rstudio/cheatsheets/blob/main/data-visualization-2.1.pdf) to find the geom function you need to create this plot. 
+
+Be sure to add labels to your plot. 
+
+```{r}
+ggplot(artist, aes(x = album_name, y = valence)) +
+  geom_boxplot() +
+  coord_flip() +
+  labs(title = "Distribution of Valence of Songs across Michael Jackson Albums, Spotify, 2022", 
+       x = "Album Name",
+       y = "Valence")
+```
+
+# Step 5: Interpret results
+
+Turn to a neighbor and discuss the plots. 
+* Check for outliers.
+* Compare medians. 
+* Compare the ranges.
+* Compare the IQRs.
+* Compare the symmetry. 
+
+> Call us over if you are having trouble interpreting!
+
+
