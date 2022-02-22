@@ -1,0 +1,85 @@
+---
+title: "Title"
+author: author_name
+---
+
+The goal of today's lab is to make this document look like: 
+Day14-rmarkdown-Solutions.html, which is in this folder. You may use the lecture slides and the R Markdown cheatsheet as a guide. You can access the R Markdown cheatsheet by clicking `Help` in your RStudio menu > `Cheatsheets` > `R Markdown cheatsheet`. I've provided you with all of the code you need to produce this file below; you're job is to style it!
+
+Here is a checklist of what you will need to do:
+
+1. Add title and author's name to the YAML header
+2. Set the file to output as an HTML document
+3. Add a floating table of contents of depth 2
+4. Set code folding to hidden
+5. Set the theme of the document by referring to: https://bootswatch.com/3/
+6. Set the default size for figures to 5x4
+7. Copy and paste text from Day14-rmarkdown-Solutions.html into the body of this file. Be sure to intersperse the plots appropriately. Format the text using the Markdown scripting language. You should expect to:
+  a. Bold one phrase
+  b. Italicize one phrase
+  c. Add a footnote
+  d. Add a hyperlink 
+  e. Add a block quote
+  f. Add two Heading 1s and two Heading 2s
+  g. Add bullet points
+9. Add the image at path: img/new-england.png
+10. Set all code chunks below to output according to the criteria in the comment of that code chunk. 
+11. Check your work by knitting the document. 
+
+```{r}
+# Run code but don't show code or output in final document
+# Don't show messages in final document
+# Don't show warnings in final document
+
+library(tidyverse)
+library(RColorBrewer)
+```
+
+```{r}
+# Run code but don't show code or output in final document
+
+read_File = readLines("https://www.countyhealthrankings.org/sites/default/files/media/document/analytic_data2021.csv")
+county_health_2021 <- read.csv(textConnection(read_File[-2]), header = TRUE, sep=",") 
+
+county_health_2021 <-
+  county_health_2021 %>%
+  rename_all(~str_replace_all(.,"\\.","_")) %>%
+  rename_all(~str_replace_all(.,"___","_")) %>%
+  filter(State_FIPS_Code != 00 & County_FIPS_Code != 0) %>%
+  select(State_FIPS_Code:Release_Year, ends_with("value"), -starts_with("X"))
+
+ma_county_health_2021 <- county_health_2021 %>%
+  filter(State_Abbreviation == "MA")
+
+ne_county_health_2021 <- county_health_2021 %>%
+  filter(State_Abbreviation %in% c("MA", "RI", "CT", "VT", "NH", "ME"))
+```
+
+```{r}
+ggplot(ma_county_health_2021, 
+       aes(x = Name, y = HIV_prevalence_raw_value)) +
+  geom_col() +
+  coord_flip() +
+  labs(title = "Health Measures by County, Massachusetts, 2021",
+       x = "County Name", 
+       y = "HIV Prevalence Measure",
+       subtitle = "County Health Rankings, University of Wisconsin Population Health Institute") +
+  theme_minimal()
+```
+
+```{r}
+# Don't show messages in final document
+# Don't show warnings in final document
+
+ggplot(ma_county_health_2021, 
+       aes(x = Food_insecurity_raw_value, y = Child_mortality_raw_value)) +
+  geom_point() +
+  labs(title = "Health Measures by County, Massachusetts, 2021",
+       x = "Food Insecurity Measure", 
+       y = "Child Mortality Measure",
+       subtitle = "County Health Rankings, University of Wisconsin Population Health Institute") +
+  theme_minimal() +
+  geom_smooth()
+```
+
+
