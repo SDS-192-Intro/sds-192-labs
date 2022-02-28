@@ -1,6 +1,6 @@
 ---
 title: "Title"
-author: author_name
+author: Lindsay Poirier
 ---
 
 The goal of today's lab is to make this document look like: 
