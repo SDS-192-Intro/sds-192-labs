@@ -1,0 +1,43 @@
+---
+title: "Day Seven: Subsetting and Aggregating Data"
+author: Lindsay Poirier
+subtitle: "SDS 192: Introduction to Data Science"
+author: |
+  Lindsay Poirier<br/>
+  <span style = 'font-size: 70%;'>
+  [Statistical & Data Sciences](http://www.smith.edu/sds), Smith College<br/>
+  </span>
+date: |
+  Spring 2022<br/>
+output: pdf_document
+---
+
+```{r}
+library(tidyverse)
+library(lubridate)
+hospitals <- read.csv("https://raw.githubusercontent.com/SDS-192-Intro/SDS-192-public-website/main/slides/datasets/Hospital_Cost_Report_2018.csv") %>%
+  mutate(
+    Fiscal.Year.Begin.Date = ymd(Fiscal.Year.Begin.Date),
+    Fiscal.Year.End.Date = ymd(Fiscal.Year.End.Date))
+```
+
+# Which city in the US has the most hospitals represented in this dataset?
+
+> Hint: Remember that different states might have cities with the same name! 
+
+```{r}
+# Code here!
+```
+
+# In California, are there more rural or urban hospitals? Do rural or urban hospitals have more beds? Be sure to check for the number of hospitals with bed numbers missing. 
+
+```{r}
+# Code here!
+```
+
+
+# Critical Access Hospitals (CCN.Facility Type: CAH) are expected to have 25 beds or fewer. In each state, which critical access hospital has the most number of beds, and how many beds does it have? Return a data frame listing the hospital's name, state, and number of beds, and order the data frame from most beds to least.
+
+```{r}
+# Code here!
+```
