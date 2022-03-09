@@ -1,0 +1,108 @@
+---
+title: "Day Nineteen: Importing Data"
+author: Lindsay Poirier
+subtitle: "SDS 192: Introduction to Data Science"
+author: |
+  Lindsay Poirier<br/>
+  <span style = 'font-size: 70%;'>
+  [Statistical & Data Sciences](http://www.smith.edu/sds), Smith College<br/>
+  </span>
+date: |
+  Spring 2022<br/>
+output: pdf_document
+---
+
+```{r}
+library(readr)
+library(stringr)
+library(lubridate)
+library(dplyr)
+library(ggplot2)
+```
+
+# Import NYC Bus Breakdown Data
+
+Navigate to: https://data.cityofnewyork.us/Transportation/Bus-Breakdown-and-Delays/ez4e-fazm. Export the data as a CSV, create a `datasets` folder in the `Day20-Exploratory` folder in this project, and store the dataset in that folder. (Alternatively, if you completed this on Monday, you can provide a link to the dataset you stored in the Day19 folder.)
+
+## Checkpoint 1: Import NYC bus breakdown data below into a variable called `bus_breakdowns`
+
+```{r}
+# Code here!
+```
+
+## Checkpoint 2: Convert all columns with dates/times in the dataset to a datetime format, and store the output in a new data frame called `bus_breakdown_cleaned`. 
+
+> You can do this for each date column, but as a bonus you might try using `mutate_at()`: https://dplyr.tidyverse.org/reference/mutate_all.html
+
+```{r}
+# Code here!
+```
+
+There are a few rows in the `How_Long_Delayed` column with question marks `???` (some have more question marks than others). Can you identify those columns with data wrangling verbs? (Hint: You will need a string function here, and you may wish to refer to the Subsetting slides from last week.)
+
+> Note that question marks serve a special purpose in `R` (help pages), and here we don't want to use the question mark for that special purpose. To treat the question mark as a regular character, we need to **escape** its special purpose. We can do that by placing two blackslashes in front of our reference to it, like this: '\\?'. The backslashes tell `R` to ignore its special purpose and treat it like any normal character. Other characters that share this feature include dollar signs, periods, backticks, etc. 
+
+```{r}
+bus_breakdowns_cleaned %>%
+  filter(str_detect(How_Long_Delayed, "\\?")) %>%
+  select(How_Long_Delayed)
+```
+
+## Checkpoint 3: Using a pipe to string a new function onto your date cleaning function above, replace all question marks in these rows with an empty string. Rerun the code you wrote to check for question marks above to ensure the question marks have been removed. 
+
+> By converting all question marks to an empty string in `How_Long_Delayed`, certain cells in your data frame now have nothing in them but are not yet designated as `NA`. They are basically just character values with no text (or ""). Run the code below to see what I mean.
+
+```{r}
+bus_breakdowns_cleaned %>%
+  filter(How_Long_Delayed == "") %>%
+  select(How_Long_Delayed) %>%
+  head()
+```
+
+## Checkpoint 4: Using a pipe to string a new function onto your date cleaning function above, convert empty text cells in `How_Long_Delayed` to `NA`s. Rerun the code I provided to check for empty strings above to ensure the question marks have been removed.
+
+# CHALLENGE
+
+What steps might you take to clean up the `How_Long_Delayed` column so that all of the values are in a standard format? Note that this is a CHALLENGING task. I stared at the values in this column a while and only have mediocre solutions. If you want to practice, I recommend taking things one step at a time. 
+
+## Checkpoint 5: How many breakdowns or delays were there in each school year? 
+
+* First create a data frame with the counts of breakdowns/delays per school year.
+* Then create a plot to visualize the same information. 
+
+```{r}
+#Code here!
+```
+
+## Checkpoint 6: In each school year, what was the most common reason that a school bus broke down or was delayed? 
+
+* First create a data frame with the count of breakdowns/delays per reason and school year.
+* Advanced move: Filter the data frame to the most common breakdown/delay reason in each year. 
+* Create a plot to visualize the counts of breakdown/delays per reason and year.
+
+```{r}
+#Code here!
+```
+
+## Checkpoint 7: Which bus company was associated with the most breakdowns or delays that occurred as a result of mechanical problems? How many times was a student impacted by this breakdown?
+
+* First create a data frame that, for each bus company, details the count of breakdowns/delays for mechanical problems and the sum of students impacted. Sort this by the count of breakdowns.
+* Check the help pages for `top_n()`. Subset the dataframe to the top ten rows and then plot the count of breakdowns per company. 
+
+> Hint: You should be able string together all components of this step via the pipe operator. 
+
+```{r}
+#Code here!
+```
+## Advanced Move! (Take it one step at a time) Checkpoint 8: In the 2020-2021 school year, during which hour of the day did most Heavy Traffic Bus Breakdowns or Delays occur in each borough?
+
+> Hint: You will need to extract the hour from a variable in the data frame. Refer to the lubridate cheatsheet: https://lubridate.tidyverse.org/. 
+
+* First create a data frame with the count of 2020-2021 heavy traffic breakdowns/delays per borough and hour. In the `group_by()` function set the name of the hour variable you supply to Hour (e.g. `group_by(Hour = ..., ...)`)
+* Plot the count of breakdowns/delays per hour, faceting by Borough.
+
+```{r}
+#Code here!
+```
+
+
