@@ -42,17 +42,7 @@ ct_school_learning_model <-
   read_csv("https://data.ct.gov/resource/5q7h-u2ac.csv?$where=update_date=%272020-09-17%27")
 ```
 
-## Checkpoint 1: Check to see whether the values in your key are the same type. 
-
-If not, convert the `reportingdistrictcode` column in `ct_school_attendance` to an integer format. Store the resulting data frame in `ct_school_attendance` 
-
-> Note: An update the data producers made to the dataset *while I was writing this lab*, rendered this step unnecessary. Let's make sure it remains unnecessary when we are in class together tomorrow. 
-
-```{r}
-#Code here!
-```
-
-## Checkpoint 2: Inner Join
+## Checkpoint 1: Inner Join
 
 * Join `ct_school_attendance` to `ct_school_learning_model` with an inner join, 
 * `select()`, the district code, the district name, the 2020-2021 attendance rate, and the percent of students that are fully remote in the first week of the 2020 school year
@@ -62,7 +52,7 @@ If not, convert the `reportingdistrictcode` column in `ct_school_attendance` to 
 #Code here!
 ```
 
-## Checkpoint 3a: Left Join
+## Checkpoint 2a: Left Join
 
 * Copy your code above and change it to a left join.
 * How many rows are in the resulting dataset? 
@@ -71,7 +61,7 @@ If not, convert the `reportingdistrictcode` column in `ct_school_attendance` to 
 #Code here!
 ```
 
-## Checkpoint 3b
+## Checkpoint 2b
 
 * Copy the code above, and filter to the rows where `percent_students_fully_remote` is `NA`
 * Why is there missing data in these rows?
@@ -81,7 +71,7 @@ If not, convert the `reportingdistrictcode` column in `ct_school_attendance` to 
 ```
 
 
-## Checkpoint 4a: Right Join
+## Checkpoint 3a: Right Join
 
 * Copy your code above and change it to a right join.
 * How many rows are in the resulting dataset? 
@@ -90,7 +80,7 @@ If not, convert the `reportingdistrictcode` column in `ct_school_attendance` to 
 #Code here!
 ```
 
-## Checkpoint 4b 
+## Checkpoint 3b 
 
 * Copy the code above, and filter to the rows where `reportingdistrictname` is `NA`
 * Why is there missing data in these rows?
@@ -100,7 +90,7 @@ If not, convert the `reportingdistrictcode` column in `ct_school_attendance` to 
 ```
 
 
-## Checkpoint 5a: Full Join
+## Checkpoint 4a: Full Join
 
 * Copy your code above and change it to a full join.
 * How many rows are in the resulting dataset? 
@@ -109,7 +99,7 @@ If not, convert the `reportingdistrictcode` column in `ct_school_attendance` to 
 #Code here!
 ```
 
-## Checkpoint 5b 
+## Checkpoint 4b 
 
 * Copy the code above, and filter to the rows where `reportingdistrictname` OR `percent_students_fully_remote` is `NA`
 * Why is there missing data in these rows?
