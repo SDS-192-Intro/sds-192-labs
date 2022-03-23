@@ -1,0 +1,94 @@
+---
+title: "Day Twenty-Two: Pivoting Data"
+author: Lindsay Poirier
+subtitle: "SDS 192: Introduction to Data Science"
+author: |
+  Lindsay Poirier<br/>
+  <span style = 'font-size: 70%;'>
+  [Statistical & Data Sciences](http://www.smith.edu/sds), Smith College<br/>
+  </span>
+date: |
+  Spring 2022<br/>
+output: pdf_document
+---
+
+```{r}
+library(readr)
+library(stringr)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+seattle_people_moving <- 
+  read_csv("https://data.seattle.gov/resource/7rx6-5pgd.csv?$limit=3000")
+```
+
+Seattle's People Moving Study documents observations of how people are using public spaces. It involves counting the number of people of certain demographics engaging in certain kinds of activities in 10-20 minute observational periods at different public locations in Seattle. It was carried out by Seattle' Department of Transportation (SDOT) based on a protocol developed by the Gehl Institute. Why do you think the DOT would conduct a study like this?
+
+In this dataset, only certain kinds of observational data is collected during a counting period at a certain location. For instance, for the first 10 minutes at a location, observers may count only data on gender, and then for the next 10 minutes at the same location, observers may count only the activities people are engaging in. Each type of count is associated with a certain number in the `moving_row_id` column:
+
+1 – represents the 10-minute people moving count with group size data.
+2 – represents the 10-minute people moving count with gender, and mobility assistance
+3 – represents the 10-minute people moving count with age groups
+4 – represents the 10-minute people moving count totals only
+5 – represents the 10-minute people moving count with gender and age groups (filter with moving_row_id 2 and 3 to combine)
+
+We want to be sure that we are comparing similar kinds of counts so the first thing we need to do is filter to count we are interested in. Let's start with age_groups. 
+
+## Checkpoint 1: Filter the `seattle_people_moving` to the rows where age groups were counted
+
+> Hint: Filter on the `moving_row_id` column
+
+## Checkpoint 2: Select `unique_moving_id` to `moving_time_of_day`, and `moving_0_4` to `moving_25_64`
+
+## Checkpoint 3: Pivot all age columns from wide to long format with two new columns: age_group and count 
+
+## Checkpoint 4: Recode the values in the `age_group` column to use dashes instead of underscores
+
+## Checkpoint 5: Create a histogram plotting the distributions of people counts in each observational period of the study, faceted by age group
+
+## Bonus! Factor the `age_group` variable so that the faceted plots appear in order by age_group. Hint: You can call the `facet()` function in `mutate()`
+
+```{r}
+# Code here!
+seattle_people_moving %>%
+  filter(moving_row_id == 3) %>%
+  select(unique_moving_id:moving_time_of_day, moving_0_4:moving_25_64) %>%
+  pivot_longer(cols = moving_0_4:moving_25_64, 
+               names_to = "age_group",
+               values_to = "count",
+               names_prefix = "moving_") %>%
+  mutate(age_group = str_replace(age_group, "_", "-")) %>%
+  mutate(age_group = factor(age_group, levels = c("0-4",
+                                                  "5-14",
+                                                  "15-24",
+                                                  "25-44",
+                                                  "45-64",
+                                                  "65",
+                                                  "25-64"
+                                                  ))) %>%
+  ggplot(aes(x = count)) +
+  geom_histogram(binwidth = 5) +
+  facet_wrap(vars(age_group))
+```
+
+## Checkpoint 5: Filter the `seattle_people_moving` to the rows where group_size was counted
+
+## Checkpoint 6: Group by the `location_id`, `moving_time_of_day`, `moving_microclimate` and then summarize the average of `moving_row_total` in a column called `avg_moving_row_total`
+
+## Checkpoint 8: Pivot `moving_microclimate` and `avg_moving_row_total` from long to wide format, and then `View()` the new data frame. Be sure to repair names!
+
+## Bonus!: Convert all characters in `moving_microclimate` to uppercase before grouping!
+
+```{r}
+# Code here!
+seattle_people_moving %>%
+  filter(moving_row_id == 1) %>%
+  mutate(moving_microclimate = toupper(moving_microclimate)) %>%
+  group_by(location_id, moving_time_of_day, moving_microclimate) %>%
+  summarize(avg_moving = mean(moving_row_total)) %>%
+  pivot_wider(names_from = moving_microclimate, 
+              values_from = avg_moving,
+              names_repair = make.names)
+```
+
