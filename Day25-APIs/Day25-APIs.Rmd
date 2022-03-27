@@ -1,0 +1,59 @@
+---
+title: "Day Twenty-Five: APIs"
+author: Lindsay Poirier
+subtitle: "SDS 192: Introduction to Data Science"
+author: |
+  Lindsay Poirier<br/>
+  <span style = 'font-size: 70%;'>
+  [Statistical & Data Sciences](http://www.smith.edu/sds), Smith College<br/>
+  </span>
+date: |
+  Spring 2022<br/>
+output: pdf_document
+---
+
+```{r}
+library(readr)
+```
+
+# Create an API call to:
+
+* Access all NYC 311 requests from the Bronx Borough 
+* Limited to 100 entries
+* As a CSV
+
+> You should refer to the API documentation, our lecture slides, and review the data table [here](https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9) to construct the URL. 
+
+```{r}
+nyc_311_bronx <- read_csv()
+```
+
+
+# Create an API call to:
+
+* Access all NYC 311 requests created March 1 of last year 
+* Limited to 100 entries
+* As a CSV
+
+> You should refer to the API documentation, our lecture slides, and review the data table [here](https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9) to construct the URL. 
+
+```{r}
+nyc_311_mar_1 <- read_csv()
+```
+
+# Create an API call to:
+
+* Access all NYC 311 requests of complaint type "Noise - Street/Sidewalk" and descriptor "Loud Music/Party"
+* Limited to 100 entries
+* As a CSV
+
+> You should refer to the API documentation, our lecture slides, and review the data table [here](https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9) to construct the URL. 
+
+> You can reference this link for URL encodings [here](https://www.w3schools.com/tags/ref_urlencode.asp). 
+
+```{r}
+# Code here!
+nyc_311_loud_music <-
+  read_csv()
+```
+

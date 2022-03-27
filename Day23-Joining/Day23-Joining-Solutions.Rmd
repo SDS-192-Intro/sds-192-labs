@@ -1,0 +1,169 @@
+---
+title: "Day Twenty-Three: Joining Data"
+author: Lindsay Poirier
+subtitle: "SDS 192: Introduction to Data Science"
+author: |
+  Lindsay Poirier<br/>
+  <span style = 'font-size: 70%;'>
+  [Statistical & Data Sciences](http://www.smith.edu/sds), Smith College<br/>
+  </span>
+date: |
+  Spring 2022<br/>
+output: pdf_document
+---
+
+
+The `ct_school_attendance` dataset documents school attendance in 2019-2020 and 2020-2021 by Connecticut school district. Certain rows documents attendance rates for "All students", while others report the data for certain student groups including:
+
+Students experiencing homelessness
+Students with disabilities
+Students who qualify for free/reduced lunch
+English learners
+All high needs students
+Non-high needs students
+Students by race/ethnicity (Hispanic/Latino of any race, Black or African American, White, All other races)
+
+Finally, there is a series of rows in the dataset that document attendance rates for all of Connecticut. 
+
+To standardize the observations under consideration, we will start by reading in the data and filtering to rows documenting attendance rates for all students and rows not documenting attendance rates for all of Connecticut.
+
+```{r}
+library(tidyverse)
+
+ct_school_attendance <- read_csv("https://data.ct.gov/resource/t4hx-jd4c.csv?$limit=3000") %>%
+  filter(studentgroup == "All Students" & reportingdistrictname != "Connecticut") 
+```
+
+
+The `ct_school_learning_model` dataset documents information about the percentage of students engaged in remote learning during each week of the year by Connecticut school district. We will only consider the remote learning percentages in the first week of most schools' 2020 school years: September 7, 2020 - September 11, 2020. 
+
+```{r}
+ct_school_learning_model <-
+  read_csv("https://data.ct.gov/resource/5q7h-u2ac.csv?$where=update_date=%272020-09-17%27")
+```
+
+## Checkpoint 1: Inner Join
+
+* Join `ct_school_attendance` to `ct_school_learning_model` with an inner join, 
+* `select()`, the district code, the district name, the 2020-2021 attendance rate, and the percent of students that are fully remote in the first week of the 2020 school year
+* How many rows are in the resulting dataset? 
+
+```{r}
+ct_school_attendance %>%
+  inner_join(ct_school_learning_model, 
+             by = c("reportingdistrictcode" = "district_code")) %>%
+  select(reportingdistrictcode, 
+         reportingdistrictname, 
+         attrate_202021, 
+         percent_students_fully_remote)
+```
+
+## Checkpoint 2a: Left Join
+
+* Copy your code above and change it to a left join.
+* How many rows are in the resulting dataset? 
+
+```{r}
+ct_school_attendance %>%
+  left_join(ct_school_learning_model, 
+            by = c("reportingdistrictcode" = "district_code")) %>%
+  select(reportingdistrictcode, 
+         reportingdistrictname, 
+         attrate_202021, 
+         percent_students_fully_remote) 
+```
+
+## Checkpoint 2b
+
+* Copy the code above, and filter to the rows where `percent_students_fully_remote` is `NA`
+* Why is there missing data in these rows?
+
+```{r}
+ct_school_attendance %>%
+  left_join(ct_school_learning_model, 
+            by = c("reportingdistrictcode" = "district_code")) %>%
+  select(reportingdistrictcode, 
+         reportingdistrictname, 
+         attrate_202021, 
+         percent_students_fully_remote) %>%
+  filter(is.na(percent_students_fully_remote))
+```
+
+
+## Checkpoint 3a: Right Join
+
+* Copy your code above and change it to a right join.
+* How many rows are in the resulting dataset? 
+
+```{r}
+ct_school_attendance %>%
+  right_join(ct_school_learning_model, by = c("reportingdistrictcode" = "district_code")) %>%
+  select(reportingdistrictcode, reportingdistrictname, attrate_202021, percent_students_fully_remote)
+```
+
+## Checkpoint 3b 
+
+* Copy the code above, and filter to the rows where `reportingdistrictname` is `NA`
+* Why is there missing data in these rows?
+
+```{r}
+ct_school_attendance %>%
+  right_join(ct_school_learning_model, 
+            by = c("reportingdistrictcode" = "district_code")) %>%
+  select(reportingdistrictcode, 
+         reportingdistrictname, 
+         attrate_202021, 
+         percent_students_fully_remote) %>%
+  filter(is.na(reportingdistrictname))
+```
+
+
+## Checkpoint 4a: Full Join
+
+* Copy your code above and change it to a full join.
+* How many rows are in the resulting dataset? 
+
+```{r}
+ct_school_attendance %>%
+  full_join(ct_school_learning_model, by = c("reportingdistrictcode" = "district_code")) %>%
+  select(reportingdistrictcode, reportingdistrictname, attrate_202021, percent_students_fully_remote)
+```
+
+## Checkpoint 4b 
+
+* Copy the code above, and filter to the rows where `reportingdistrictname` OR `percent_students_fully_remote` is `NA`
+* Why is there missing data in these rows?
+
+```{r}
+ct_school_attendance %>%
+  full_join(ct_school_learning_model, 
+            by = c("reportingdistrictcode" = "district_code")) %>%
+  select(reportingdistrictcode, 
+         reportingdistrictname, 
+         attrate_202021, 
+         percent_students_fully_remote) %>%
+  filter(is.na(reportingdistrictname) | is.na(percent_students_fully_remote))
+```
+
+## Bonus! Is there a correlation between the percent of students fully remote in the first week of the 2020 CT school year and the 2020-2021 attendance rate? Create a scatterplot to visualize this. 
+
+> Hint: You are going to have to clean up the `percent_students_fully_remote` by converting asterisks to `NA`, removing the percentage sign, converting to integer, and dividing the number by 100. 
+
+```{r}
+ct_school_learning_model_cleaned <- 
+  ct_school_learning_model %>%
+  mutate(percent_students_fully_remote = na_if(percent_students_fully_remote, "*")) %>%
+  mutate(percent_students_fully_remote = str_replace(percent_students_fully_remote, "%", "")) %>%
+  mutate(percent_students_fully_remote = as.integer(percent_students_fully_remote)) %>%
+  mutate(percent_students_fully_remote = percent_students_fully_remote / 100)
+
+ct_school_attendance %>%
+  inner_join(ct_school_learning_model_cleaned, 
+            by = c("reportingdistrictcode" = "district_code")) %>%
+  select(reportingdistrictcode, 
+         reportingdistrictname, 
+         attrate_202021, 
+         percent_students_fully_remote) %>%
+  ggplot(aes(x = attrate_202021, y = percent_students_fully_remote)) +
+  geom_point(alpha = 0.5)
+```
