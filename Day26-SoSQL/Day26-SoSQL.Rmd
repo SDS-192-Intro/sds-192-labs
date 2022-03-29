@@ -1,0 +1,91 @@
+---
+title: "Day Twenty-Six: SoSQL"
+author: Lindsay Poirier
+subtitle: "SDS 192: Introduction to Data Science"
+author: |
+  Lindsay Poirier<br/>
+  <span style = 'font-size: 70%;'>
+  [Statistical & Data Sciences](http://www.smith.edu/sds), Smith College<br/>
+  </span>
+date: |
+  Spring 2022<br/>
+output: pdf_document
+---
+
+
+```{r setup}
+library(readr)
+```
+
+Today we are going to write 6 API calls to access values in the NYC 311 Service Request Open Dataset, using SoSQL (Socrata's Query Language). 
+
+> You should refer to the API documentation, our lecture slides, and review the data table [here](https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9) to construct the URLs. 
+
+> You can reference this link for URL encodings [here](https://www.w3schools.com/tags/ref_urlencode.asp). 
+
+# CHECKPOINT 1
+
+Create an API call to return the unique keys and complaint types for 10 entries in NYC's 311 open dataset. In other words, translate the following `dplyr` call into a `SoSQL` query: 
+
+`nyc_311 %>% select(unique_key, complaint_type) %>% head(10)`
+
+```{r}
+# Code here!
+nyc_311_unique_keys <-
+  read_csv()
+```
+
+# CHECKPOINT 2
+
+Create an API call to return the unique keys, created dates, and incident addresses for rows with complaint type "Food Poisoning" in Manhattan's community district 5 (which hosts Times Square and other major NYC tourist attractions). Limit the results to 3000 entries in NYC's 311 open dataset. In other words, translate the following `dplyr` call into a `SoSQL` query: 
+
+`nyc_311 %>% select(unique_key, created_date, incident_address) %>% filter(complaint_type == "Food Poisoning" & community_board == "05 MANHATTAN") %>% head(3000)`
+
+```{r}
+nyc_311_food_poisoning <-
+  read_csv()
+```
+
+# CHECKPOINT 3
+
+Order the previous result in descending order by created date. In other words, translate the following `dplyr` call into a `SoSQL` query: 
+
+`nyc_311 %>% select(unique_key, created_date, incident_address) %>% filter(complaint_type == "Food Poisoning" & community_board == "05 MANHATTAN") %>% arrange(desc(created_date)) %>% head(3000)`
+
+```{r}
+nyc_311_food_poisoning <-
+  read_csv()
+```
+ 
+# CHECKPOINT 4
+
+Create an API call to return all columns for rows with complaint type "Construction Lead Dust" that were created in March 2022. In other words, translate the following `dplyr` call into a `SoSQL` query: 
+
+`nyc_311 %>% select(everything()) %>% filter(complaint_type == "Food Poisoning" & created_date > "2022-03-01" & created_date < "2022-03-31")` 
+
+```{r}
+nyc_311_construction_lead_dust <-
+  read_csv()
+```
+
+# CHECKPOINT 5
+
+Create an API call to return the counts per descriptor for the complaint type "Consumer Complaint." In other words, translate the following `dplyr` call into a `SoSQL` query: 
+
+`nyc_311 %>% %>% filter(complaint_type == "Consumer Complaint") %>% group_by(descriptor) %>% summarize(count = n())` 
+
+```{r}
+nyc_311_consumer_complaints <-
+  read_csv()
+```
+
+# CHECKPOINT 6
+  
+Create an API call to return the latitude, longitude, and counts per BBL (a unique ID for buildings) for the complaint type "HEAT/HOT WATER." Filter out rows where the bbl is '0000000000', and sort the counts in descending order. Filter to the results to the rows where the count of heat and hot water complaints is greater than 1000. In other words, translate the following `dplyr` call into a `SoSQL` query: 
+
+`nyc_311 %>% %>% filter(complaint_type == "HEAT/HOT WATER" & bbl != "0000000000") %>% group_by(bbl, latitude, longitude) %>% summarize(count = n()) %>% arrange(desc(count))` 
+
+```{r}
+nyc_311_heat_counts <-
+  read_csv()
+```
