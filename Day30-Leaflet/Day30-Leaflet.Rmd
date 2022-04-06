@@ -1,0 +1,194 @@
+---
+title: "Day Thirty: Leaflet"
+subtitle: "SDS 192: Introduction to Data Science"
+author: |
+  Lindsay Poirier<br/>
+  <span style = 'font-size: 70%;'>
+  [Statistical & Data Sciences](http://www.smith.edu/sds), Smith College<br/>
+  </span>
+date: |
+  Spring 2022<br/>
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: lumen
+---
+
+
+```{r setup,	message = FALSE, warning = FALSE, include = FALSE}
+
+library(readr)
+library(leaflet)
+library(RColorBrewer)
+library(sf)
+```
+
+
+As promised, this week we will be working to identify the worst landlords in NYC. The NYC Public Advocate (currently Jumaane D. Willaims) publishes a list of [NYC's worst landlords](https://landlordwatchlist.com/landlords) every year by tracking the number of class B and C Housing Preservation and Development (HPD) violations in buildings owned by various people and companies in the City. From the Public Advocate's website:
+
+> Examples of Class B violations include: failing to provide self-closing public doors or adequate lighting in public areas, lack of posted Certificates of Occupancy, or failure to remove vermin. Class C violations include: immediately hazardous violations such as rodents, lead-based paint, and lack of heat, hot water, electricity, or gas.^1^ 
+
+^1^See more [here](https://landlordwatchlist.com/about).
+
+I have already constructed a dataset documenting the 100 rental properties with the most average housing violations approved in 2021. If you want to check out the code to construct that dataset, you can review the code in `data-import.R` in this directory. Run the code below to import the dataset. 
+
+```{r import-data, message=FALSE, warning=FALSE}
+worst_buildings <- read_csv("datasets/worst_buildings.csv")
+```
+
+As the Public Advocate's Office does, this dataset was constructed by weighting the total violation count for a building according to the class of the violation (Class B = 1; Class C = 1.5). To highlight properties that consistently fail to address housing violations throughout the year, I also adopted the Public Advocate Office's strategy of calculating average open violations at each building for a given year. This involves determining the number open violations for each building each month of the year (Dec 2020 - Nov 2021), adding this number up, and then dividing by 12. You will find this number in the `avg_violations_weigthed` column. 
+
+Rather than determining the 100 worst *landlords* in NYC, we will map the 100 *buildings* that averaged the most class B and C housing violations from Dec 2020 to Nov 2021, and then identify the landlords of those buildings. We may find that certain landlords appear more than once on the map if they own several buildings. The Public Advocate's Office, on the other hand, aggregates across all properties the landlord owns.
+
+While I've tried to stick as close as possible to the Public Advocate Office's methods, their documentation provides only a high-level overview of the steps they took to aggregate the data, so the numbers I've generated are slightly different from theirs. You can read their full methodology [here](https://landlordwatchlist.com/about).
+
+# Mapping in Leaflet
+
+We are going to work with the `leaflet()` package to design a map of worst 100 NYC rental properties in terms of housing violations. Each map will color the points by the average number of violations and size the points by the number of units in the building. At any point during these exercises, you can reference the [leaflet documentation](https://rstudio.github.io/leaflet/) to help you build out these maps. 
+
+# Initialize your Map
+
+There are three steps to initializing a map in leaflet:
+
+1. Call the `leaflet()` function to create a map widget. 
+2. Call the `setView(lat = 0.00, lng = 0.00, zoom = 0)`. This function determines where the map will initially focus. We provide a set of coordinates that will be the map's center point when we load it, and a number (from 1 to 16) to indicate the level at which to zoom in on the map.  
+3. Call `addProviderTiles()` to load up provider tiles that constitute a base map. A number of different map providers have provider tiles that we can reference here. A few examples of the arguments we can supply to this function include include:
+
+* `providers$OpenStreetMap`
+* `providers$Stamen.Toner`
+* `providers$CartoDB.Positron`
+* `providers$Esri.NatGeoWorldMap`
+
+Run the code below to initialize a map. 
+
+```{r initialize-map}
+map1 <- leaflet(width = "100%") %>%
+  setView(lat = 0.00, lng = 0.00, zoom = 0) %>%
+  addProviderTiles(providers$Stamen.Toner)
+
+map1
+```
+
+# Create an NYC Basemap
+
+Adjust the code below to center the map on NYC. You'll need to look up the coordinates for NYC, keeping in mind that South and West coordinates will be negative. Adjust the `zoom` to keep the whole city in view (setting the zoom level between 1 and 16). When you are happy with the View, switch out the provider tiles to a base map that won't distract from the data points we will layer on top of this map. Keep in mind our discussions regarding *Visualization Aesthetics* here. 
+
+```{r create-basemap}
+nyc_map <- leaflet(width = "100%") %>%
+  setView(lat = 0.00, lng = 0.00, zoom = 0) %>%
+  addProviderTiles(providers$Stamen.Toner)
+
+nyc_map
+```
+
+# Set Geometry and Transform Data CRS
+
+We will be looking to add our data to the leaflet, so we need to ensure that the data has a consistent CRS with the basemap. The coordinates in 311 data are in NAD 83 (EPSG:4269) and our basemap is in WGS 84 (EPSG:4326). You will need two functions to do this: `st_as_sf()` and `st_transform()`. 
+
+```{r set-crs}
+# Uncomment and fill in the blanks below. The column for longitude will go in the first coordinate position, and latitude will go in the second. 
+
+#worst_buildings <- worst_buildings %>%
+#  st_as_sf(coords = c("____", "____"), crs = ____) %>%
+#  st_transform(____)
+
+
+```
+
+
+
+# Add Layers
+
+Once we have our initial map, we can add layers to the map that display different forms of geospatial data. There are a number of different functions in leaflet that we can use to add layers. For instance, we can add markers to the map at a certain geo-coordinates using the [`addMarkers()` function](https://rstudio.github.io/leaflet/markers.html). We can also add polygons and rectangles to the map using the `addRectangles()` function or the `addPolygons()` function. Today we are going to work exclusively with the `addCircleMarkers()` function. This allows us to add a circle at the latitude and longitude for each row in our dataset. It also allows us to adjust the circle's color and size according to values in our dataset. 
+
+Let's get started with adding this layer by calling our basemap of NYC, piping the `addCircleMarkers()` function and setting the following three arguments in the `addCircleMarkers()` function.  
+
+* `data = worst_buildings`
+
+```{r layer-map}
+# Uncomment and add the function
+
+#nyc_map %>%
+
+```
+
+# Style Map
+
+Map isn't so legible/beautiful at this point, right? Copy the map you just created into the code chunk below. Check out the help pages for the `addCircleMarkers()` function, and add some arguments to help with the map's legibility. At the very least, you should adjust the `radius`, `weight`, `color`, `fillColor`, and `fillOpacity`, and understand how each of these arguments will change the style of the map. For now you can set the `color` to "black" and the `fillColor` to "white".
+
+```{r style-map}
+# Copy previous map here! 
+
+```
+
+> Where are the properties located on the map? Are they dispersed across the ciy or concentrated in certain locations?
+
+# Create Color Palettes
+
+Now that our map is looking more legible, let's color the circles by the 2021 average open violations at each property on the map. Remembering back to our lesson on *Data Fundamentals* and *Visualization Aesthetics*, we should keep in mind that `avg_violations_weighted` is a numeric variable, and therefore, we will create a sequential color palette to map it. 
+
+There are three functions in leaflet for creating a sequential color palette: `colorNumeric()`, `colorBin()`, and `colorQuantile()`. You can refer to Wednesday's lecture slides to review the differences between these palettes. Each function takes both of the following arguments:
+
+* `palette`: the colors we wish to map to the data. We will use preset palettes from the `RColorBrewer`. You can call `display.brewer.all()` to see the list of palettes or reference here: http://applied-r.com/rcolorbrewer-palettes/
+* `domain`: the values we wish to apply the palette to. Here we reference the column from the data frame we wish to color the points by using the accessor `$`. 
+
+In addition the `colorBin()` function takes the argument `bins`, which indicates the number of color intervals to be created. The `colorQuantile()` functions takes the argument `n`, which indicates the number of quantiles to map data into. 
+
+Create three palettes below (one using each function `colorNumeric()`, `colorBin()`, and `colorQuantile()`), setting the `palette` to "YlOrRd", and the domain to `worst_buildings$avg_violations_weighted`. For `colorBin()`, set the `bins` to 4, and for `colorQuantile()`, set `n` to 4. 
+
+```{r create-numeric-palettes}
+pal_num <- colorNumeric(palette="YlOrRd", 
+                        domain = worst_buildings$avg_violations_weighted)
+
+#Uncomment below to create the other two palettes.
+#pal_bin <- 
+
+#pal_quant <- 
+
+```
+
+# Color Circle Markers
+
+Copy and paste the last map you created into the code chunk below, three times. For each, we are going to adjust the `fillColor` by setting it to the variable from the dataset that we wish to color (`avg_violations_weighted`), colored by one of the palettes that we created. We can do this by setting the fill color argument equal to:
+
+* `~pal_num(avg_violations_weighted)`: for coloring the points according the `pal_num()` palette we created on the `avg_violations_weighted` variable
+* `~pal_bin(avg_violations_weighted)`: for coloring the points according the `pal_bin()` palette we created on the `avg_violations_weighted` variable
+* `~pal_quant(avg_violations_weighted)`: for coloring the points according the `pal_quant` palette we created on the `avg_violations_weighted()` variable
+
+```{r color-circles}
+# Copy map first time here!
+
+# Copy map second time here!
+
+# Copy map third time here!
+```
+
+> Knowledge check: Why do the colors appear differently on each map? Which map best represents the distribution of values in `avg_violations_weighted`?
+
+# Size Circle Markers
+
+Copy and paste the code from above that colors `avg_violations_weighted` in bins into the code chunk below. We are going to size each circle by the number of rental units in that property. Number of units is stored in the column `legalclassa` in our dataset, so we could size the circles by setting the radius to `~legalclassa`. However, this would lead to some massive circles on our map as certain buildings have hundreds of units, and the value we supply to radius will determine the pixels of the circle on our map. To deal with this, we are going to take the square root of the units in each property using the `sqrt()` function. Set the radius to `~sqrt(legalclassa)` below.
+
+```{r size-circles}
+# Copy map colored by bins here!
+
+```
+
+> Reflection: What do we learn by adding this additional variable to the plot? Which properties might a Public Adovcate wish to draw attention to after including this additional information?
+
+# Labels and Legends
+
+As a final step, we are going to add labels and legends to the map. Copy and paste the code from the previous step into the code chunk below. Then do the following:
+
+1. Add the `label` argument to the `addCircleMarkers()` function, and set the value to the column in our dataset that indicates the landlord's full name: `~fullname`. Run the code and check what happens when we hover over the circles. 
+2. Add a pipe to the end of the `addCircleMarkers()` and then add the function `addLegend()`. Consult the help pages for the `addLegend()` function to determine how to add a legend for the meaning of the colors represented on the map. At the very least, you will need an argument for `data`, `pal`, and `values`.
+
+```{r add-context}
+# Copy previous map here!
+  
+```
+
+> Reflection: What data ethics issues are at play here? What assumptions and commitments informed the design of this dataset? Who has had a say in data collection and analysis regarding this dataset? Who has been excluded? What are the benefits and harms of this dataset, and how are they distributed amongst diverse social groups? Post your thougts in our Slack #sds-192-discussion-threads channel!
+
+
