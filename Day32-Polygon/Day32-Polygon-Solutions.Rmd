@@ -1,0 +1,130 @@
+---
+title: "Day Thirty-Two: Polygon Mapping"
+subtitle: "SDS 192: Introduction to Data Science"
+author: |
+  Lindsay Poirier<br/>
+  <span style = 'font-size: 70%;'>
+  [Statistical & Data Sciences](http://www.smith.edu/sds), Smith College<br/>
+  </span>
+date: |
+  Spring 2022<br/>
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: lumen
+---
+
+# Which community district complains the most about rats in 2021?
+
+## Load Packages
+
+```{r setup,	message = FALSE, warning = FALSE, include = FALSE}
+library(readr)
+library(leaflet)
+library(RColorBrewer)
+library(tidyverse)
+library(sf)
+```
+
+
+## Import 311 Data
+
+```{r read-311}
+nyc_311_rodents_2021 <- read_csv("https://data.cityofnewyork.us/resource/erm2-nwe9.csv?$select=unique_key,created_date,complaint_type,community_board&$where=date_extract_y(created_date)=2021%20AND%20complaint_type=%27Rodent%27&$limit=40000")
+```
+
+## Import Community District Data
+
+Navigate [here](https://www1.nyc.gov/site/planning/data-maps/open-data/districts-download-metadata.page). Download Community Districts (Clipped to Shoreline). Unzip the folder, and move **all** contents into a `sds-192-labs/datasets`. Use the `st_read()` function to read the file ending in `.shp` into the `cd` variable below. 
+
+```{r read-polygon}
+cd <- st_read("Day32-Polygon/datasets/nycd.shp")
+```
+
+## Convert CRS
+
+The data geometry will import as NAD 83, and we need to convert it to WGS 84 in order to match the leaflet projection. Convert the CRS of `cd` to `4326`.
+
+```{r transform-crs}
+cd <-
+  cd %>%
+  st_transform(4326)
+```
+
+## Create a Join Field
+
+NYC 311 data codes community districts in the format: "XX BOROUGH_NAME" (e.g. 03 MANHATTAN), while our shapefile codes community districts as XXX (e.g. 103). The code below transforms the community district column in our 311 data into XXX format to match the shapefile. Run the code to create this join field. 
+
+```{r clean-data}
+nyc_311_rodents_2021 <-
+  nyc_311_rodents_2021 %>%
+  separate(community_board, into = c("cd_num", "borough"), sep = " ", extra = "merge") %>%
+  mutate(borough_num = case_when(
+    borough == "MANHATTAN" ~ 1,
+    borough == "BRONX" ~ 2, 
+    borough == "BROOKLYN" ~ 3,
+    borough == "QUEENS" ~ 4,
+    borough == "STATEN ISLAND" ~ 5
+  )) %>%
+  mutate(BoroCD = paste0(borough_num, cd_num) %>% as.numeric())
+```
+
+## Aggregate Total 311 Counts by Community District
+
+Using our data wrangling verbs, calculate the total count of 311 complaints about rats per community district. 
+
+```{r agg-data}
+nyc_311_rodents_2021_agg <-
+  nyc_311_rodents_2021 %>%
+  group_by(BoroCD) %>%
+  summarize(Count = n())
+```
+
+## Join the 311 Counts to the Community District Shapefile
+
+```{r join-data}
+cd_rodents <-
+  cd %>% 
+  left_join(nyc_311_rodents_2021_agg, by = c("BoroCD" = "BoroCD"))
+```
+
+## Create a Palette based on the Counts of 311 Complaints in `cd_rodents`
+
+Here you should create a numeric palette. Set the palette to one of the sequential palettes at https://r-graph-gallery.com/38-rcolorbrewers-palettes.html and the domain to the column in `cd_rodents` that documents the Count of complaints. Note that you will need the accessor for this `$`.
+
+```{r create-palette}
+pal_num <- colorNumeric(palette = "YlOrRd", domain = cd_rodents$Count)
+```
+
+
+## Create Map
+
+Create a map that plots the community districts in `cd_rodents`, colored by the count of 311 complaints. Take this one step at a time:
+
+1. Call `leaflet()`
+2. Set the initial view
+3. Add the provider tiles
+4. Add polygons via `cd_rodents`
+5. Color the `Count` variable according to the palette you created via `fillColor`
+6. Add a legend (See last week's lab for help with this)
+7. Add further styling to your plot. 
+
+
+```{r create-map}
+leaflet() %>%
+  setView(lat = 40.7128, lng = -74.006, zoom = 10) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(data = cd_rodents,
+              fillColor = ~pal_num(Count),
+              color = "black",
+              weight = 0.5,
+              fillOpacity = 0.5) %>%
+  addLegend(data = cd_rodents,
+            title = "Count of Rat Sightings", 
+            pal = pal_num, 
+            values = ~Count)
+  
+```
+
+

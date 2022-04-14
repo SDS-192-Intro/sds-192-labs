@@ -1,0 +1,252 @@
+---
+title: "Day Thirty-Three: How to Lie with Maps"
+subtitle: "SDS 192: Introduction to Data Science"
+author: |
+  Lindsay Poirier<br/>
+  <span style = 'font-size: 70%;'>
+  [Statistical & Data Sciences](http://www.smith.edu/sds), Smith College<br/>
+  </span>
+date: |
+  Spring 2022<br/>
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: lumen
+---
+
+```{r setup,	message = FALSE, warning = FALSE, include = FALSE}
+library(readr)
+library(leaflet)
+library(RColorBrewer)
+library(tidyverse)
+library(sf)
+```
+
+```{r read-voting, include=FALSE}
+# Navigate to https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/K7760H and download the shapefile for one state. Store the shapefile in the datasets folder, and replace ct_2020.shp below with the shapefile for your state. 
+
+voting_2020 <- st_read("datasets/ct_2020.shp") %>%
+  st_transform(4326) %>%
+  mutate(TOTAL = rowSums(across(starts_with("G20")))) %>%
+  mutate(PER_DEM = G20PREDBID / TOTAL * 100) %>%
+  mutate(PER_DEM_LEAD = (G20PREDBID - G20PRERTRU) / TOTAL * 100)
+
+# Download 2016 election data for the same state at https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/NH5S2I. Store the shapefile in the datasets folder, and replace ct_2016.shp below with the shapefile for your state.
+
+voting_2016 <- st_read("datasets/ct_2016.shp") %>%
+  st_transform(4326)
+```
+
+# Standardization
+
+Below we are going to create two leaflet maps. The first should be colored by the total votes received by Joseph Biden, and the second should be the percentage of votes received by Joseph Biden. 
+
+> Discuss with a neighbor how the maps are different and what each tells us. Is one more honest than another?
+
+```{r dem-map, echo=FALSE}
+
+#Uncomment the line below and set the domain to the column documenting the total votes for Biden (column name is G20PREDBID)
+#pal_numeric <- colorNumeric(palette = "Blues", domain = _____)
+
+
+leaflet() %>%
+  #setView(_____) %>% #Uncomment and set the View to your state
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(data = voting_2020,
+              #fillColor = ~_____, #Uncomment and color total votes for Biden by pal_numeric
+              stroke = FALSE,
+              fillOpacity = 0.5) %>%
+  addLegend(data = voting_2020,
+            title = "Votes for Biden, 2020", 
+            pal = pal_numeric, 
+            values = ~G20PREDBID)
+  
+```
+
+```{r per-dem-map, echo=FALSE}
+#Uncomment the line below and set the domain to the column documenting the percent votes for Biden (column name is PER_DEM)
+pal_numeric <- colorNumeric(palette = "Blues", 
+                    domain = voting_2020$PER_DEM)
+
+leaflet() %>%
+  #setView(_____) %>% #Uncomment and set the View to your state
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(data = voting_2020,
+              #fillColor = ~_____, #Uncomment and color percent votes for Biden by pal_numeric
+              stroke = FALSE,
+              fillOpacity = 0.5) %>%
+  addLegend(data = voting_2020,
+            title = "% Votes for Biden, 2020", 
+            pal = pal_numeric, 
+            values = ~PER_DEM)
+  
+```
+
+# Classification, Part 1
+
+Below we are going to create two leaflet maps. Both will use `colorBin()` to illustrate the percentage of Biden's lead over Trump. However, the first will have 2 bins, and the second will have 8 bins. The domain will be -100:100 (i.e. a -100% lead to a 100% lead). 
+
+> Discuss with a neighbor how the maps are different and what each tells us. Is one more honest than another?
+
+```{r bin-map2, echo=FALSE}
+pal_bin <- colorBin(palette = "RdYlBu", 
+                    domain = c(-100:100),
+                    #______, #Uncomment and set the bin number to 2
+                    pretty = FALSE)
+
+leaflet() %>%
+  #setView(_____) %>% #Uncomment and set the View to your state
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(data = voting_2020,
+              #fillColor = ~_____(PER_DEM_LEAD), #Uncomment and color PER_DEM_LEAD by the bin palette you created
+              stroke = FALSE,
+              fillOpacity = 0.5) %>%
+  addLegend(data = voting_2020,
+            title = "% Biden Lead Over Trump, 2020", 
+            pal = pal_bin, 
+            values = ~PER_DEM_LEAD)
+  
+```
+
+```{r bin-map8, echo=FALSE}
+pal_bin <- colorBin(palette = "RdYlBu", 
+                    domain = c(-100:100),
+                    #______, #Uncomment and set the bin number to 8
+                    pretty = FALSE)
+
+leaflet() %>%
+  #setView(_____) %>% #Uncomment and set the View to your state
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(data = voting_2020,
+              #fillColor = ~_____(PER_DEM_LEAD), #Uncomment and color PER_DEM_LEAD by the bin palette you created
+              stroke = FALSE,
+              fillOpacity = 0.5) %>%
+  addLegend(data = voting_2020,
+            title = "% Biden Lead Over Trump, 2020", 
+            pal = pal_bin, 
+            values = ~PER_DEM_LEAD)
+  
+```
+
+# Classification, Part 2
+
+Below we are going to create two leaflet maps. The first should be colored by the percentage of Biden's lead over Trump using the `colorBin()` function, and the second should colored by the percentage of Biden's lead over Trump using the `colorQuantile()` function. Both should have 8 bins; however, the domains will be slightly different. For binning, the domain will be -100:100 (i.e. a -100% lead to a 100% lead). For quantiles, the domain will be all of the values in `voting_2020$PER_DEM_LEAD`. Remember:
+
+* `colorBin()` classifies numeric values into equally spaced intervals
+* `colorQuantile()` classifies an equal number of numeric values into a specified number of bins
+
+> Discuss with a neighbor how the maps are different and what each tells us. Is one more honest than another?
+
+```{r bin-map, echo=FALSE}
+pal_bin <- colorBin(palette = "RdYlBu", 
+                    #_____, #Uncomment and set the domain to c(-100:100)
+                    bins = 8,
+                    pretty = FALSE)
+
+leaflet() %>%
+  #setView(_____) %>% #Uncomment and set the View to your state
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(data = voting_2020,
+              #fillColor = ~_____(PER_DEM_LEAD), #Uncomment and color PER_DEM_LEAD by the bin palette you created
+              stroke = FALSE,
+              fillOpacity = 0.5) %>%
+  addLegend(data = voting_2020,
+            title = "% Biden Lead Over Trump, 2020", 
+            pal = pal_bin, 
+            values = ~PER_DEM_LEAD)
+  
+```
+
+```{r quantile-map, echo=FALSE}
+pal_quantile <- colorQuantile(palette = "RdYlBu", 
+                    #_____, #Uncomment and set the domain to the values in voting_2020$PER_DEM_LEAD
+                    n = 8)
+
+leaflet() %>%
+  #setView(_____) %>% #Uncomment and set the View to your state
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(data = voting_2020,
+              #fillColor = ~_____(PER_DEM_LEAD), #Uncomment and color PER_DEM_LEAD by the quantile palette you created
+              stroke = FALSE,
+              fillOpacity = 0.5) %>%
+  addLegend(data = voting_2020,
+            title = "% Biden Lead Over Trump, 2020", 
+            pal = pal_quantile, 
+            values = ~PER_DEM_LEAD)
+  
+```
+
+# Aggregation
+
+Below we are going to create two leaflet maps. For we will repeat the "% Biden Lead Over Trump, 2020" you created above using `colorBin()`. For the second, we are going to create the same plot aggregated by counties instead of voting precincts. 
+
+> Discuss with a neighbor how the maps are different and what each tells us. Is one more honest than another?
+
+```{r bin-map-repeat, echo=FALSE}
+pal_bin <- colorBin(palette = "RdYlBu", 
+                    domain = c(-100:100),
+                    bins = 8,
+                    pretty = FALSE)
+
+leaflet() %>%
+  #setView(_____) %>% #Uncomment and set the View to your state
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(data = voting_2020,
+              fillColor = ~pal_bin(PER_DEM_LEAD),
+              stroke = FALSE,
+              fillOpacity = 0.5) %>%
+  addLegend(data = voting_2020,
+            title = "% Biden Lead Over Trump, 2020", 
+            pal = pal_bin, 
+            values = ~PER_DEM_LEAD)
+```
+
+
+```{r county-map, echo=FALSE, message=FALSE, warning=FALSE}
+sf_use_s2(FALSE) #Helps deal with invalid geo problem when aggregating geometry
+
+voting_2020_county <-
+  voting_2020 %>%
+  #group_by(_____) %>% #Uncomment and group by county
+  summarize_at(vars(starts_with("G20"), TOTAL), sum, na.rm = TRUE) %>%
+  ungroup() %>%
+  mutate(PER_DEM = G20PREDBID / TOTAL * 100) %>%
+  mutate(PER_DEM_LEAD = (G20PREDBID - G20PRERTRU) / TOTAL * 100) %>%
+  st_as_sf()
+  
+pal_bin <- colorBin(palette = "RdYlBu", 
+                    domain = c(-100:100),
+                    bins = 8, 
+                    pretty = FALSE)
+
+leaflet() %>%
+  #setView(_____) %>% #Uncomment and set the View to your state
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(data = voting_2020_county, #Note that we are now mapping by county here
+              fillColor = ~pal_bin(PER_DEM_LEAD),
+              stroke = FALSE,
+              fillOpacity = 0.5) %>%
+  addLegend(data = voting_2020_county,
+            title = "% Biden Lead Over Trump, 2020", 
+            pal = pal_bin, 
+            values = ~PER_DEM_LEAD)
+  
+```
+
+
+# Reprecincting
+
+Below you are going to create a map with two layers - the first will outline 2016 precinct data, and the second will outline 2020 precinct data. 
+
+> Zoom in on different cities. Do you notice any precinct lines that have been redrawn? Searching online, can you find any information about why these precincts have been redrawn (e.g. search "precinct changes in [CITY NAME]")? What effect do these changes have on how the data gets aggregated?
+
+```{r precinct-map, echo=FALSE, message=FALSE, warning=FALSE}
+leaflet() %>%
+  #setView(_____) %>% #Uncomment and set the View to your state
+  addProviderTiles(providers$CartoDB.Positron) 
+
+# Add a pipe to the code above. Add polygons for data=voting_2020, set the stroke to TRUE, color to "purple", weight to 1, and fillOpacity to 0. Add another pipe and then add polygons for data=voting_2016, set the stroke to TRUE, color to "orange", weight to 1, and fillOpacity to 0.
+  
+```
+
