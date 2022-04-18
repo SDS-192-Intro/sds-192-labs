@@ -60,7 +60,7 @@ voting_2020_me <- import_state_data("Day34-Functions/datasets/me_2020.shp")
 
 ```
 
-# Create a histogram plotting the distribution of the percent dem lead across precincts in each New England state
+# Write a function to create a histogram plotting the distribution of the percent dem lead across precincts in each New England state
 
 ```{r}
 
