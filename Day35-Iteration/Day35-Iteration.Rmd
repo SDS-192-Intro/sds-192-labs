@@ -1,0 +1,114 @@
+---
+title: "Day Thirty-Five: Iteration"
+subtitle: "SDS 192: Introduction to Data Science"
+author: |
+  Lindsay Poirier<br/>
+  <span style = 'font-size: 70%;'>
+  [Statistical & Data Sciences](http://www.smith.edu/sds), Smith College<br/>
+  </span>
+date: |
+  Spring 2022<br/>
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: lumen
+---
+
+## Load Packages
+
+```{r setup,	message = FALSE, warning = FALSE, include = FALSE}
+library(tidyverse)
+library(sf)
+```
+
+```{r}
+import_state_data <- function(file_path, var_name){
+  x <- st_read(file_path) %>%
+    st_transform(4326) %>%
+    mutate(TOTAL = rowSums(across(starts_with("G20")))) %>%
+    mutate(PER_DEM = G20PREDBID / TOTAL * 100) %>%
+    mutate(PER_DEM_LEAD = (G20PREDBID - G20PRERTRU) / TOTAL * 100) %>%
+    st_set_geometry(NULL)
+  
+  assign(var_name, x, envir = .GlobalEnv)
+  
+  return(x)
+}
+```
+
+
+```{r read-voting, include=FALSE}
+states <- c("ma", "ct", "ri", "nh", "me", "vt")
+
+var_names <- states %>% map_chr(~paste0("voting_2020_",.x))
+
+file_paths <- states %>% map_chr(~paste0("Day35-Iteration/datasets/",.x, "_2020.shp"))
+
+map2(file_paths, var_names, import_state_data)
+```
+
+# Write code to sum across all columns documenting total votes for a presidential candidate in `voting_2020_me`
+
+```{r}
+# Code here
+```
+
+# Write code to return the first 5 lines of `voting_2020_nh` in each county grouping
+
+```{r}
+# Code here
+```
+
+# Write a function to calculate the sum of votes for any candidate across all precincts
+
+```{r}
+sum_votes_any_cand<- function(df, var = G20PREDBID){
+  df %>% summarize(Total = sum({{var}}))
+}
+```
+
+```{r}
+# Code here
+```
+
+# Write a function to create a histogram plotting the distribution of the percent dem lead across precincts in each New England state
+
+```{r}
+dem_lead_hist <- function(data, title, width_bins = 10){
+ ggplot(data, aes(x = PER_DEM_LEAD)) +
+    geom_histogram(binwidth = width_bins) +
+   labs(title = paste("Distribution of Percent Dem Lead in", title, "2020"))
+}
+```
+
+```{r}
+# Code here
+```
+
+# Write a function that takes a town name in MA and determines how many votes were cast in that town
+
+```{r}
+votes_ma_towns <- function(town_name){
+
+  x <- voting_2020_ma %>%
+    filter(TOWN == town_name) %>%
+    summarize(total_votes = sum(TOTAL))
+  
+  return(x)
+}
+```
+
+```{r}
+# Code here
+```
+
+# Write a function that takes a series of town names and returns a data frame of the precinct with the highest `PER_DEM_LEAD` in each town
+
+```{r}
+# Code here
+```
+
+```{r}
+# Code here
+```

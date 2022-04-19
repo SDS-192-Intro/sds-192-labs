@@ -1,0 +1,122 @@
+---
+title: "Day Thirty-Four: Functions"
+subtitle: "SDS 192: Introduction to Data Science"
+author: |
+  Lindsay Poirier<br/>
+  <span style = 'font-size: 70%;'>
+  [Statistical & Data Sciences](http://www.smith.edu/sds), Smith College<br/>
+  </span>
+date: |
+  Spring 2022<br/>
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: lumen
+---
+
+## Load Packages
+
+```{r setup,	message = FALSE, warning = FALSE, include = FALSE}
+library(readr)
+library(tidyverse)
+library(sf)
+```
+
+```{r}
+import_state_data <- function(file_path){
+  x <- st_read(file_path) %>%
+    st_transform(4326) %>%
+    mutate(TOTAL = rowSums(across(starts_with("G20")))) %>%
+    mutate(PER_DEM = G20PREDBID / TOTAL * 100) %>%
+    mutate(PER_DEM_LEAD = (G20PREDBID - G20PRERTRU) / TOTAL * 100) %>%
+    st_set_geometry(NULL)
+  
+  return(x)
+}
+```
+
+
+```{r read-voting, include=FALSE}
+
+voting_2020_ma <- import_state_data("Day34-Functions/datasets/ma_2020.shp")
+voting_2020_ct <- import_state_data("Day34-Functions/datasets/ct_2020.shp")
+voting_2020_ri <- import_state_data("Day34-Functions/datasets/ri_2020.shp")
+voting_2020_vt <- import_state_data("Day34-Functions/datasets/vt_2020.shp")
+voting_2020_nh <- import_state_data("Day34-Functions/datasets/nh_2020.shp")
+voting_2020_me <- import_state_data("Day34-Functions/datasets/me_2020.shp")
+
+```
+
+# Write a function to calculate the sum of votes for Biden across all precincts
+
+```{r}
+sum_votes_any_cand<- function(data){
+  
+  x <- data %>%
+    summarize(total_votes = sum({{num_votes}}))
+  
+  return(x)
+}
+```
+
+```{r}
+sum_votes_biden(voting_2020_ct)
+sum_votes_biden(voting_2020_nh)
+sum_votes_biden(voting_2020_ma)
+sum_votes_biden(voting_2020_me)
+sum_votes_biden(voting_2020_vt)
+sum_votes_biden(voting_2020_ri)
+```
+
+
+# Adjust your function to take any candidate's column name as an argument. Set the default to votes for Biden. 
+
+```{r}
+sum_votes_any_cand(voting_2020_ct, G20PRERTRU)
+sum_votes_any_cand(voting_2020_nh, G20PRERTRU)
+sum_votes_any_cand(voting_2020_ma, G20PRERTRU)
+sum_votes_any_cand(voting_2020_me, G20PRERTRU)
+sum_votes_any_cand(voting_2020_vt, G20PRERTRU)
+sum_votes_biden(voting_2020_ri, G20PRERTRU)
+```
+
+# Write a function to create a histogram plotting the distribution of the percent dem lead across precincts in each New England state
+
+```{r}
+dem_lead_hist <- function(data, width_bins = 10, title){
+ x <- ggplot(data, aes(x = PER_DEM_LEAD)) +
+    geom_histogram(binwidth = width_bins) +
+   labs(title = title)
+ 
+ return(x)
+}
+```
+
+```{r}
+dem_lead_hist(voting_2020_ct, title = "Distribution...CT")
+dem_lead_hist(voting_2020_ma, state = "MA")
+dem_lead_hist(voting_2020_ri, state= "RI")
+dem_lead_hist(voting_2020_nh, state = "NH")
+dem_lead_hist(voting_2020_me, state = "ME")
+dem_lead_hist(voting_2020_vt, 2, "VT")
+```
+
+
+# Write a function that takes a town name in MA and determines how many votes were cast in that town
+
+```{r}
+votes_ma_towns <- function(data = voting_2020_ma, town_name){
+
+  x <- data %>%
+    filter(TOWN == town_name) %>%
+    summarize(total_votes = sum(TOTAL))
+  
+  return(x)
+}
+```
+
+```{r}
+votes_ma_towns(town_name = "BLACKSTONE")
+```
+
